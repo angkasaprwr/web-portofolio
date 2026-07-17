@@ -29,7 +29,6 @@ import { useAbout, useSkills, useCv } from '../../hooks/usePortfolio';
 import { useEducations } from '../../hooks/useEducation';
 import { assetUrl } from '../../lib/api';
 import { cvApi } from '../../services/apiServices';
-import { useAuth } from '../../context/AuthContext';
 import EducationModal from '../../components/about/EducationModal';
 import SkillModal from '../../components/about/SkillModal';
 import toast from 'react-hot-toast';
@@ -49,7 +48,6 @@ export default function AboutPage() {
   const { data: allSkills } = useSkills({});
   const { data: cv } = useCv();
   const { data: educations = [] } = useEducations();
-  const { isAuthenticated } = useAuth();
   const [eduModalOpen, setEduModalOpen] = useState(false);
   const [skillModalOpen, setSkillModalOpen] = useState(false);
 
@@ -189,16 +187,14 @@ export default function AboutPage() {
             <div className="card-premium !hover:translate-y-0 p-6 h-full flex flex-col">
               <div className="flex items-center justify-between mb-5">
                 <h3 className="font-display text-xl">Keahlian Utama</h3>
-                {isAuthenticated && (
-                  <button
-                    type="button"
-                    onClick={() => setSkillModalOpen(true)}
-                    className="grid h-7 w-7 place-items-center rounded-lg bg-pink/10 text-pink hover:bg-pink hover:text-white transition"
-                    aria-label="Edit keahlian"
-                  >
-                    <Pencil size={12} />
-                  </button>
-                )}
+                <button
+                  type="button"
+                  onClick={() => setSkillModalOpen(true)}
+                  className="grid h-7 w-7 place-items-center rounded-lg bg-pink/10 text-pink hover:bg-pink hover:text-white transition"
+                  aria-label="Edit keahlian"
+                >
+                  <Pencil size={12} />
+                </button>
               </div>
               <div
                 className="space-y-4 flex-1 cursor-pointer group"
@@ -233,16 +229,14 @@ export default function AboutPage() {
             <div className="card-premium !hover:translate-y-0 p-6 h-full flex flex-col">
               <div className="flex items-center justify-between mb-5">
                 <h3 className="font-display text-xl">Pendidikan</h3>
-                {isAuthenticated && (
-                  <button
-                    type="button"
-                    onClick={() => setEduModalOpen(true)}
-                    className="grid h-7 w-7 place-items-center rounded-lg bg-pink/10 text-pink hover:bg-pink hover:text-white transition"
-                    aria-label="Edit pendidikan"
-                  >
-                    <Pencil size={12} />
-                  </button>
-                )}
+                <button
+                  type="button"
+                  onClick={() => setEduModalOpen(true)}
+                  className="grid h-7 w-7 place-items-center rounded-lg bg-pink/10 text-pink hover:bg-pink hover:text-white transition"
+                  aria-label="Edit pendidikan"
+                >
+                  <Pencil size={12} />
+                </button>
               </div>
               <div className="relative flex-1 space-y-6 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-px before:bg-pink-soft">
                 {(educations.length > 0 ? educations : timeline).map((item, i) => {

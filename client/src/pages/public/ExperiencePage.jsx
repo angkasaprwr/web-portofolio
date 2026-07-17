@@ -20,7 +20,6 @@ import { Sparkle, Blob } from '../../components/common/Decorations';
 import { CardSkeleton, PageSkeleton } from '../../components/common/Skeleton';
 import { useAbout, useExperiences, useExperienceCategories } from '../../hooks/usePortfolio';
 import { assetUrl } from '../../lib/api';
-import { useAuth } from '../../context/AuthContext';
 import ExperienceCategoryModal from '../../components/experience/ExperienceCategoryModal';
 
 const categoryIcons = {
@@ -37,7 +36,6 @@ const formatDate = (date) => {
 };
 
 export default function ExperiencePage() {
-  const { isAuthenticated } = useAuth();
   const [params, setParams] = useSearchParams();
   const category = params.get('category') || 'Semua';
   const type = params.get('type') || '';
@@ -154,26 +152,24 @@ export default function ExperiencePage() {
                     onClick={() => openCategoryModal(item.category, 'Formal')}
                     className="card-premium p-5 text-left border border-pink-soft/60 relative group"
                   >
-                    {isAuthenticated && (
-                      <span
-                        role="button"
-                        tabIndex={0}
-                        onClick={(e) => {
+                    <span
+                      role="button"
+                      tabIndex={0}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openCategoryModal(item.category, 'Formal');
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
                           e.stopPropagation();
                           openCategoryModal(item.category, 'Formal');
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            e.stopPropagation();
-                            openCategoryModal(item.category, 'Formal');
-                          }
-                        }}
-                        className="absolute top-3 right-3 grid h-8 w-8 place-items-center rounded-lg bg-pink/10 text-pink opacity-0 group-hover:opacity-100 transition"
-                        aria-label={`Kelola ${item.category}`}
-                      >
-                        <Pencil size={14} />
-                      </span>
-                    )}
+                        }
+                      }}
+                      className="absolute top-3 right-3 grid h-8 w-8 place-items-center rounded-lg bg-pink/10 text-pink opacity-0 group-hover:opacity-100 transition"
+                      aria-label={`Kelola ${item.category}`}
+                    >
+                      <Pencil size={14} />
+                    </span>
                     <div className="grid h-11 w-11 place-items-center rounded-2xl bg-pink/10 text-pink mb-3">
                       <Icon size={18} />
                     </div>
@@ -199,26 +195,24 @@ export default function ExperiencePage() {
                     onClick={() => openCategoryModal(item.category, 'Informal')}
                     className="card-premium p-5 text-left border border-pink-soft/60 relative group"
                   >
-                    {isAuthenticated && (
-                      <span
-                        role="button"
-                        tabIndex={0}
-                        onClick={(e) => {
+                    <span
+                      role="button"
+                      tabIndex={0}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openCategoryModal(item.category, 'Informal');
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
                           e.stopPropagation();
                           openCategoryModal(item.category, 'Informal');
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            e.stopPropagation();
-                            openCategoryModal(item.category, 'Informal');
-                          }
-                        }}
-                        className="absolute top-3 right-3 grid h-8 w-8 place-items-center rounded-lg bg-pink/10 text-pink opacity-0 group-hover:opacity-100 transition"
-                        aria-label={`Kelola ${item.category}`}
-                      >
-                        <Pencil size={14} />
-                      </span>
-                    )}
+                        }
+                      }}
+                      className="absolute top-3 right-3 grid h-8 w-8 place-items-center rounded-lg bg-pink/10 text-pink opacity-0 group-hover:opacity-100 transition"
+                      aria-label={`Kelola ${item.category}`}
+                    >
+                      <Pencil size={14} />
+                    </span>
                     <div className="grid h-11 w-11 place-items-center rounded-2xl bg-gold/10 text-gold mb-3">
                       <Icon size={18} />
                     </div>

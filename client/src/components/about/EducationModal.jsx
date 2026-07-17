@@ -14,7 +14,6 @@ import {
   Tag,
   X,
 } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
 import { useEducations } from '../../hooks/useEducation';
 import { educationsApi } from '../../services/educationApi';
 import { Sparkle } from '../common/Decorations';
@@ -82,8 +81,7 @@ function detailLine(edu) {
 }
 
 export default function EducationModal({ open, onClose }) {
-  const { isAuthenticated } = useAuth();
-  const { data: educations = [], isLoading } = useEducations({ all: isAuthenticated });
+  const { data: educations = [], isLoading } = useEducations({ all: true });
   const queryClient = useQueryClient();
 
   const [selected, setSelected] = useState(null);
@@ -91,12 +89,6 @@ export default function EducationModal({ open, onClose }) {
   const [mode, setMode] = useState('view');
   const [saving, setSaving] = useState(false);
   const [preview, setPreview] = useState(false);
-
-  const requireAuth = () => {
-    if (isAuthenticated) return true;
-    toast.error('Silakan login admin untuk mengubah data');
-    return false;
-  };
 
   useEffect(() => {
     if (!open) {
@@ -122,7 +114,6 @@ export default function EducationModal({ open, onClose }) {
   };
 
   const startCreate = () => {
-    if (!requireAuth()) return;
     setSelected(null);
     setForm({ ...emptyForm, order: educations.length + 1 });
     setMode('create');
@@ -131,7 +122,6 @@ export default function EducationModal({ open, onClose }) {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    if (!requireAuth()) return;
     if (!form.institution || !form.startYear) {
       toast.error('Institusi dan tahun mulai wajib diisi');
       return;
@@ -168,7 +158,6 @@ export default function EducationModal({ open, onClose }) {
   };
 
   const handleDelete = async () => {
-    if (!requireAuth()) return;
     if (!selected?.id || !confirm('Hapus data pendidikan ini?')) return;
     try {
       await educationsApi.remove(selected.id);
@@ -197,7 +186,6 @@ export default function EducationModal({ open, onClose }) {
       ? `${form.startYear} - ${form.endYear}`
       : form.startYear;
   const showForm = selected || mode === 'create';
-  const readOnly = !isAuthenticated;
 
   return (
     <AnimatePresence>
@@ -362,8 +350,7 @@ export default function EducationModal({ open, onClose }) {
                                   type="text"
                                   value={periodDisplay}
                                   onChange={(e) => {
-                                    if (readOnly) return;
-                                    const raw = e.target.value;
+                                      const raw = e.target.value;
                                     const parts = raw.split('-').map((s) => s.trim());
                                     const start = parts[0] || '';
                                     const endPart = parts[1];
@@ -378,12 +365,11 @@ export default function EducationModal({ open, onClose }) {
                                       });
                                     }
                                   }}
-                                  readOnly={readOnly}
                                   placeholder="2022 - Sekarang"
                                   required
                                   className="modal-input w-full rounded-2xl border border-[#ECECEC] dark:border-[#5a4f56] bg-white dark:bg-[#352630] h-14 pl-11 pr-10 text-base text-ink outline-none focus:border-[#FF4F93] focus:shadow-[0_0_0_3px_rgba(255,79,147,0.15)]"
                                 />
-                                {periodDisplay && !readOnly && (
+                                {periodDisplay && (
                                   <button
                                     type="button"
                                     className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7C7C7C] hover:text-[#FF4F93]"
@@ -400,7 +386,7 @@ export default function EducationModal({ open, onClose }) {
                                 placeholder="Tanggal Selesai (opsional)"
                                 value={form.isCurrent ? '' : form.endYear}
                                 onChange={(v) => setForm({ ...form, endYear: v, isCurrent: false })}
-                                disabled={form.isCurrent || readOnly}
+                                disabled={form.isCurrent}
                               />
                             </div>
                           </div>
@@ -412,7 +398,6 @@ export default function EducationModal({ open, onClose }) {
                             value={form.institution}
                             onChange={(v) => setForm({ ...form, institution: v })}
                             required
-                            disabled={readOnly}
                           />
 
                           <FormField
@@ -421,7 +406,6 @@ export default function EducationModal({ open, onClose }) {
                             variant="jobdesk"
                             value={form.field || ''}
                             onChange={(v) => setForm({ ...form, field: v, degree: v })}
-                            disabled={readOnly}
                           />
 
                           <div className="grid grid-cols-2 gap-3">
@@ -431,8 +415,7 @@ export default function EducationModal({ open, onClose }) {
                               value={form.level}
                               onChange={(v) => setForm({ ...form, level: v })}
                               options={levels}
-                              disabled={readOnly}
-                            />
+                              />
                             <FormField
                               label="IPK (opsional)"
                               icon={Star}
@@ -440,8 +423,7 @@ export default function EducationModal({ open, onClose }) {
                               placeholder="3.72"
                               value={form.gpa || ''}
                               onChange={(v) => setForm({ ...form, gpa: v })}
-                              disabled={readOnly}
-                            />
+                              />
                           </div>
 
                           <div>
@@ -455,7 +437,6 @@ export default function EducationModal({ open, onClose }) {
                                 value={form.description || ''}
                                 onChange={(e) => setForm({ ...form, description: e.target.value })}
                                 placeholder="Deskripsi singkat tentang pendidikan..."
-                                readOnly={readOnly}
                                 className="modal-input w-full rounded-2xl border border-[#ECECEC] dark:border-[#5a4f56] bg-white dark:bg-[#352630] min-h-[130px] py-3 pl-11 pr-4 text-base text-ink outline-none focus:border-[#FF4F93] focus:shadow-[0_0_0_3px_rgba(255,79,147,0.15)] resize-y"
                               />
                             </div>
@@ -468,8 +449,7 @@ export default function EducationModal({ open, onClose }) {
                               value={form.status}
                               onChange={(v) => setForm({ ...form, status: v })}
                               options={statuses}
-                              disabled={readOnly}
-                            />
+                              />
                             <FormField
                               label="Urutan"
                               icon={ListOrdered}
@@ -477,8 +457,7 @@ export default function EducationModal({ open, onClose }) {
                               type="number"
                               value={form.order}
                               onChange={(v) => setForm({ ...form, order: v })}
-                              disabled={readOnly}
-                            />
+                              />
                           </div>
                         </div>
 

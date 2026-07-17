@@ -789,6 +789,23 @@ html.dark .jobdesk-modal-panel .text-\[\#7C7C7C\] {
   color: #c4b8be !important;
 }
 
+html.dark .jobdesk-modal-panel .text-\[\#222222\] {
+  color: #f7f2f5 !important;
+}
+
+html.dark .jobdesk-modal-panel input,
+html.dark .jobdesk-modal-panel textarea,
+html.dark .jobdesk-modal-panel select {
+  color: #f7f2f5 !important;
+  background-color: #352630 !important;
+}
+
+html:not(.dark) .jobdesk-modal-panel input,
+html:not(.dark) .jobdesk-modal-panel textarea,
+html:not(.dark) .jobdesk-modal-panel select {
+  color: #2c2c2c !important;
+}
+
 /* Jobdesk modal panel */
 .jobdesk-modal-panel {
   width: 92%;

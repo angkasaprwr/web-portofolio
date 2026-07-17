@@ -17,7 +17,6 @@ import {
   ListOrdered,
   Info,
 } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
 import { useSkills } from '../../hooks/usePortfolio';
 import { skillsApi } from '../../services/apiServices';
 import { Sparkle } from '../common/Decorations';
@@ -95,8 +94,7 @@ function skillToForm(skill) {
 }
 
 export default function SkillModal({ open, onClose, category = 'Proficiency' }) {
-  const { isAuthenticated } = useAuth();
-  const { data: skillsRes, isLoading } = useSkills({ category, all: isAuthenticated });
+  const { data: skillsRes, isLoading } = useSkills({ category, all: true });
   const queryClient = useQueryClient();
 
   const skills = (skillsRes?.data || []).slice().sort((a, b) => (a.order || 0) - (b.order || 0));
@@ -126,7 +124,7 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
       setForm(skillToForm(pick));
       setMode('edit');
     }
-  }, [open, skills, isAuthenticated]);
+  }, [open, skills]);
 
   const selectItem = (skill) => {
     setSelected(skill);
@@ -137,10 +135,6 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
   };
 
   const startCreate = () => {
-    if (!isAuthenticated) {
-      toast.error('Silakan login admin untuk mengubah data');
-      return;
-    }
     setSelected(null);
     setForm({ ...emptyForm, category, order: items.length + 1 });
     setMode('create');
@@ -239,8 +233,6 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
     dragOver.current = null;
     setItems(newItems);
 
-    if (!isAuthenticated) return;
-
     const orders = newItems.map((item, idx) => ({ id: item.id, order: idx + 1 }));
     try {
       await skillsApi.reorder(orders);
@@ -303,7 +295,7 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                         return (
                           <motion.div
                             key={skill.id}
-                            draggable={isAuthenticated}
+                            draggable
                             onDragStart={() => handleDragStart(index)}
                             onDragEnter={() => handleDragEnter(index)}
                             onDragEnd={handleDragEnd}
@@ -318,11 +310,9 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                             }`}
                             onClick={() => selectItem(skill)}
                           >
-                            {isAuthenticated && (
-                              <span className="shrink-0 cursor-grab text-muted/60 hover:text-pink">
-                                <GripVertical size={16} />
-                              </span>
-                            )}
+                            <span className="shrink-0 cursor-grab text-muted/60 hover:text-pink">
+                              <GripVertical size={16} />
+                            </span>
                             <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-[#FFF1F7] dark:bg-pink/15 text-[#FF4F93]">
                               <Icon size={20} />
                             </span>
@@ -379,14 +369,7 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                       </div>
 
                       <form
-                        onSubmit={(e) => {
-                          if (!isAuthenticated) {
-                            e.preventDefault();
-                            toast.error('Silakan login admin untuk mengubah data');
-                            return;
-                          }
-                          handleSave(e);
-                        }}
+                        onSubmit={handleSave}
                         className="flex-1 flex flex-col min-h-0"
                       >
                         <div className="flex-1 overflow-y-auto px-9 pb-4 space-y-5">
@@ -525,13 +508,7 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                               if (selected) setForm(skillToForm(selected));
                               else onClose();
                             }}
-                            onDelete={() => {
-                              if (!isAuthenticated) {
-                                toast.error('Silakan login admin untuk mengubah data');
-                                return;
-                              }
-                              handleDelete();
-                            }}
+                            onDelete={handleDelete}
                             saving={saving}
                             showDelete={mode === 'edit' && !!selected?.id}
                           />

@@ -57,25 +57,7 @@ router.get('/experiences/:id', experienceController.get);
 router.get('/educations', educationController.list);
 router.get('/educations/:id', educationController.get);
 
-router.get('/certificates', certificateController.list);
-router.get('/certificates/:id', certificateController.get);
-router.get('/social-links', socialController.list);
-router.get('/cv', cvController.getActive);
-router.get('/cv/list', cvController.list);
-router.post('/cv/:id/download', cvController.download);
-router.get('/settings', settingController.list);
-router.get('/settings/:key', settingController.get);
-
-/* ─── Protected Admin ─── */
-router.use(authenticate);
-
-router.get('/auth/me', authController.me);
-router.post('/auth/change-password', changePasswordValidator, validate, authController.changePassword);
-router.get('/dashboard', dashboardController.overview);
-
-router.put('/about', aboutValidator, validate, aboutController.upsert);
-router.patch('/about/:id', aboutValidator, validate, aboutController.update);
-
+/* Floating-card portfolio CRUD — public so UI buttons work without admin login */
 router.post('/educations', educationController.create);
 router.put('/educations/:id', educationController.update);
 router.delete('/educations/:id', educationController.remove);
@@ -84,12 +66,6 @@ router.post('/skills', skillValidator, validate, skillController.create);
 router.put('/skills/reorder', skillController.reorder);
 router.put('/skills/:id', skillValidator, validate, skillController.update);
 router.delete('/skills/:id', skillController.remove);
-
-router.post('/projects', uploadThumbnail.single('thumbnail'), projectValidator, validate, projectController.create);
-router.put('/projects/:id', uploadThumbnail.single('thumbnail'), projectController.update);
-router.delete('/projects/:id', projectController.remove);
-router.post('/projects/:id/images', uploadImage.single('image'), projectController.addImage);
-router.delete('/projects/:id/images/:imageId', projectController.removeImage);
 
 router.post(
   '/experiences',
@@ -112,6 +88,31 @@ router.put(
 router.delete('/experiences/:id', experienceController.remove);
 router.post('/experiences/:id/images', uploadImage.single('image'), experienceController.addImage);
 router.delete('/experiences/:id/images/:imageId', experienceController.removeImage);
+
+router.get('/certificates', certificateController.list);
+router.get('/certificates/:id', certificateController.get);
+router.get('/social-links', socialController.list);
+router.get('/cv', cvController.getActive);
+router.get('/cv/list', cvController.list);
+router.post('/cv/:id/download', cvController.download);
+router.get('/settings', settingController.list);
+router.get('/settings/:key', settingController.get);
+
+/* ─── Protected Admin ─── */
+router.use(authenticate);
+
+router.get('/auth/me', authController.me);
+router.post('/auth/change-password', changePasswordValidator, validate, authController.changePassword);
+router.get('/dashboard', dashboardController.overview);
+
+router.put('/about', aboutValidator, validate, aboutController.upsert);
+router.patch('/about/:id', aboutValidator, validate, aboutController.update);
+
+router.post('/projects', uploadThumbnail.single('thumbnail'), projectValidator, validate, projectController.create);
+router.put('/projects/:id', uploadThumbnail.single('thumbnail'), projectController.update);
+router.delete('/projects/:id', projectController.remove);
+router.post('/projects/:id/images', uploadImage.single('image'), projectController.addImage);
+router.delete('/projects/:id/images/:imageId', projectController.removeImage);
 
 router.post('/certificates', uploadImage.single('image'), certificateValidator, validate, certificateController.create);
 router.put('/certificates/:id', uploadImage.single('image'), certificateController.update);

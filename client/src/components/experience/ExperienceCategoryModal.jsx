@@ -14,7 +14,6 @@ import {
   Check,
   Eye,
 } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
 import { useExperiences } from '../../hooks/usePortfolio';
 import { experiencesApi } from '../../services/apiServices';
 import { Sparkle } from '../common/Decorations';
@@ -88,11 +87,10 @@ function fileNameFromUrl(url) {
 export default function ExperienceCategoryModal({ open, onClose, category = 'Jobdesk' }) {
   const cfg = getCategoryConfig(category);
   const CategoryIcon = cfg.icon;
-  const { isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
   const { data: expRes, isLoading } = useExperiences({
     category,
-    all: isAuthenticated,
+    all: true,
     limit: 50,
     sort: 'order',
   });
@@ -136,7 +134,7 @@ export default function ExperienceCategoryModal({ open, onClose, category = 'Job
       reset(emptyForm);
       setMode('view');
     }
-  }, [open, category, items, isAuthenticated]);
+  }, [open, category, items]);
 
   const selectItem = (exp) => {
     setSelected(exp);
@@ -149,10 +147,6 @@ export default function ExperienceCategoryModal({ open, onClose, category = 'Job
   };
 
   const startCreate = () => {
-    if (!isAuthenticated) {
-      toast.error('Silakan login admin untuk mengubah data');
-      return;
-    }
     setSelected(null);
     reset({ ...emptyForm, order: items.length + 1 });
     setExistingDoc('');
@@ -286,15 +280,7 @@ export default function ExperienceCategoryModal({ open, onClose, category = 'Job
                     <SectionTitle size="large">
                       {cfg.listTitle} <Sparkle size={12} className="text-gold" />
                     </SectionTitle>
-                    <ModalAddButton
-                      onClick={() => {
-                        if (!isAuthenticated) {
-                          toast.error('Silakan login admin untuk mengubah data');
-                          return;
-                        }
-                        startCreate();
-                      }}
-                    >
+                    <ModalAddButton onClick={startCreate}>
                       {cfg.addLabel}
                     </ModalAddButton>
                   </div>
@@ -369,7 +355,13 @@ export default function ExperienceCategoryModal({ open, onClose, category = 'Job
                     )}
                   </div>
 
-                  <div className="mt-6 shrink-0">
+                  <div className="mt-6 shrink-0 space-y-3">
+                    <ModalAddButton
+                      onClick={startCreate}
+                      className="w-full justify-center !rounded-2xl !py-3 !text-sm !border-2 border-dashed"
+                    >
+                      {cfg.addLabel} Baru
+                    </ModalAddButton>
                     <ModalInfoAlert>
                       Klik pada salah satu item untuk melihat atau mengedit detail.
                     </ModalInfoAlert>
@@ -400,14 +392,7 @@ export default function ExperienceCategoryModal({ open, onClose, category = 'Job
                       </div>
 
                       <form
-                        onSubmit={(e) => {
-                          if (!isAuthenticated) {
-                            e.preventDefault();
-                            toast.error('Silakan login admin untuk mengubah data');
-                            return;
-                          }
-                          handleSubmit(onSave)(e);
-                        }}
+                        onSubmit={handleSubmit(onSave)}
                         className="flex-1 flex flex-col min-h-0"
                       >
                         <div className="flex-1 overflow-y-auto px-9 pb-4 space-y-5">
@@ -604,13 +589,7 @@ export default function ExperienceCategoryModal({ open, onClose, category = 'Job
                               if (selected) reset(expToForm(selected));
                               else onClose();
                             }}
-                            onDelete={() => {
-                              if (!isAuthenticated) {
-                                toast.error('Silakan login admin untuk mengubah data');
-                                return;
-                              }
-                              handleDelete();
-                            }}
+                            onDelete={handleDelete}
                             saving={saving}
                             showDelete={mode === 'edit' && !!selected?.id}
                           />
