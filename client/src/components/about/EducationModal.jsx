@@ -184,16 +184,17 @@ export default function EducationModal({ open, onClose }) {
   return (
     <AnimatePresence>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-        <ModalOverlay onClose={onClose}>
+        <ModalOverlay onClose={onClose} variant="jobdesk">
           <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: 16 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: 16 }}
-            transition={{ type: 'spring', stiffness: 320, damping: 28 }}
-            className="relative w-full max-w-[920px] max-h-[92vh] rounded-3xl bg-white dark:bg-[#2a1e26] shadow-2xl overflow-hidden flex flex-col modal-panel"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+            className="jobdesk-modal-panel relative bg-white dark:bg-[#2a1e26] overflow-hidden flex flex-col modal-panel"
             onClick={(e) => e.stopPropagation()}
           >
             <ModalHeader
+              variant="jobdesk"
               icon={GraduationCap}
               title={
                 <>
@@ -204,13 +205,13 @@ export default function EducationModal({ open, onClose }) {
               onClose={onClose}
             />
 
-            <div className="flex-1 overflow-y-auto">
-              <div className="grid lg:grid-cols-[minmax(280px,320px)_1fr] divide-y lg:divide-y-0 lg:divide-x divide-pink-soft/40">
+            <div className="flex-1 overflow-hidden">
+              <div className="grid h-full lg:grid-cols-[2fr_3fr] divide-y lg:divide-y-0 lg:divide-x divide-[#F3D4E5]/60 dark:divide-pink-soft/30">
                 {/* Left — timeline list */}
-                <div className="p-5 sm:p-6 flex flex-col min-h-[420px]">
-                  <div className="flex items-center justify-between gap-2 mb-4">
-                    <SectionTitle>
-                      Daftar Pendidikan <Sparkle size={10} />
+                <div className="p-8 flex flex-col min-h-0 overflow-hidden bg-white dark:bg-[#2a1e26]">
+                  <div className="flex items-center justify-between gap-3 mb-6 shrink-0">
+                    <SectionTitle size="large">
+                      Daftar Pendidikan <Sparkle size={12} className="text-gold" />
                     </SectionTitle>
                     {isAuthenticated && (
                       <ModalAddButton onClick={startCreate}>Tambah Pendidikan</ModalAddButton>
@@ -294,7 +295,7 @@ export default function EducationModal({ open, onClose }) {
                 </div>
 
                 {/* Right — form */}
-                <div className="p-5 sm:p-6 overflow-y-auto max-h-[70vh] lg:max-h-none">
+                <div className="p-9 overflow-y-auto min-h-0 bg-white dark:bg-[#2a1e26]">
                   {!selected && mode !== 'create' ? (
                     <div className="h-full min-h-[300px] flex items-center justify-center text-muted text-sm">
                       Pilih pendidikan dari daftar di sebelah kiri.
@@ -425,6 +426,7 @@ export default function EducationModal({ open, onClose }) {
                         </div>
 
                         <ModalActions
+                          variant="jobdesk"
                           onCancel={() => {
                             if (selected) setForm(eduToForm(selected));
                             else onClose();

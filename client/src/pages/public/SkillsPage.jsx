@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Check, BookOpen, Target } from 'lucide-react';
 import {
@@ -25,6 +26,7 @@ import { PageSkeleton } from '../../components/common/Skeleton';
 import AnimatedCounter from '../../components/common/AnimatedCounter';
 import { useAbout, useSkills, useCertificates } from '../../hooks/usePortfolio';
 import { assetUrl } from '../../lib/api';
+import SkillModal from '../../components/about/SkillModal';
 
 const coreCategories = [
   {
@@ -82,6 +84,7 @@ const toolGroups = [
 ];
 
 export default function SkillsPage() {
+  const [skillModalOpen, setSkillModalOpen] = useState(false);
   const { data: about, isLoading } = useAbout();
   const { data: skillsRes } = useSkills({});
   const { data: certsRes } = useCertificates();
@@ -154,9 +157,13 @@ export default function SkillsPage() {
                         </li>
                       ))}
                     </ul>
-                    <Link to="/keahlian" className="mt-5 text-sm font-semibold text-pink">
+                    <button
+                      type="button"
+                      onClick={() => setSkillModalOpen(true)}
+                      className="mt-5 text-sm font-semibold text-pink text-left hover:underline"
+                    >
                       Selengkapnya →
-                    </Link>
+                    </button>
                   </div>
                 </FadeUp>
               );
@@ -249,6 +256,8 @@ export default function SkillsPage() {
           </div>
         </div>
       </section>
+
+      <SkillModal open={skillModalOpen} onClose={() => setSkillModalOpen(false)} category="Proficiency" />
     </>
   );
 }

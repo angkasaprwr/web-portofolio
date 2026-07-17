@@ -16,7 +16,6 @@ import {
   LayoutGrid,
   ListOrdered,
   Info,
-  Sparkles,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useSkills } from '../../hooks/usePortfolio';
@@ -254,41 +253,43 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
   return (
     <AnimatePresence>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-        <ModalOverlay onClose={onClose}>
+        <ModalOverlay onClose={onClose} variant="jobdesk">
           <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: 16 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: 16 }}
-            transition={{ type: 'spring', stiffness: 320, damping: 28 }}
-            className="relative w-full max-w-[980px] max-h-[92vh] rounded-3xl bg-white dark:bg-[#2a1e26] shadow-2xl overflow-hidden flex flex-col modal-panel"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+            className="jobdesk-modal-panel relative bg-white dark:bg-[#2a1e26] overflow-hidden flex flex-col modal-panel"
             onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
           >
             <ModalHeader
+              variant="jobdesk"
               icon={BarChart3}
-              iconShape="square"
               title={
                 <>
-                  Detail Keahlian Utama <Sparkles size={16} className="text-pink" />
+                  Detail Keahlian Utama <Sparkle size={16} className="text-gold" />
                 </>
               }
               subtitle="Kelola semua keahlian utama yang Anda miliki."
               onClose={onClose}
             />
 
-            <div className="flex-1 overflow-y-auto">
-              <div className="grid lg:grid-cols-[2fr_3fr] divide-y lg:divide-y-0 lg:divide-x divide-pink-soft/40">
+            <div className="flex-1 overflow-hidden">
+              <div className="grid h-full lg:grid-cols-[2fr_3fr] divide-y lg:divide-y-0 lg:divide-x divide-[#F3D4E5]/60 dark:divide-pink-soft/30">
                 {/* Left — skill list */}
-                <div className="p-5 sm:p-6 flex flex-col min-h-[420px]">
-                  <div className="flex items-center justify-between gap-2 mb-4">
-                    <SectionTitle>
-                      Daftar Keahlian <Sparkle size={10} />
+                <div className="p-8 flex flex-col min-h-0 overflow-hidden bg-white dark:bg-[#2a1e26]">
+                  <div className="flex items-center justify-between gap-3 mb-6 shrink-0">
+                    <SectionTitle size="large">
+                      Daftar Keahlian <Sparkle size={12} className="text-gold" />
                     </SectionTitle>
                     {isAuthenticated && (
                       <ModalAddButton onClick={startCreate}>Tambah Keahlian</ModalAddButton>
                     )}
                   </div>
 
-                  <div className="flex-1 space-y-2.5 overflow-y-auto max-h-[50vh] lg:max-h-none pr-1">
+                  <div className="flex-1 overflow-y-auto space-y-[18px] pr-1">
                     {isLoading ? (
                       [1, 2, 3].map((i) => <div key={i} className="skeleton h-20 rounded-2xl" />)
                     ) : items.length === 0 ? (
@@ -298,17 +299,20 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                         const Icon = getSkillIcon(skill);
                         const isSelected = selected?.id === skill.id;
                         return (
-                          <div
+                          <motion.div
                             key={skill.id}
                             draggable={isAuthenticated}
                             onDragStart={() => handleDragStart(index)}
                             onDragEnter={() => handleDragEnter(index)}
                             onDragEnd={handleDragEnd}
                             onDragOver={(e) => e.preventDefault()}
-                            className={`relative flex items-center gap-2.5 rounded-2xl border p-3.5 transition-all cursor-pointer ${
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            whileHover={{ y: -3 }}
+                            className={`relative flex items-center gap-3 min-h-[110px] rounded-[20px] border-2 p-4 transition-all cursor-pointer shadow-[0_8px_25px_rgba(255,79,147,0.08)] ${
                               isSelected
-                                ? 'border-pink bg-pink-soft/20 shadow-[0_0_0_1px_rgba(248,87,166,0.35)]'
-                                : 'border-pink-soft/50 hover:border-pink/35 bg-white dark:bg-[#352630]'
+                                ? 'border-[#FF4F93] bg-[#FFF1F7]/30 dark:bg-pink/5'
+                                : 'border-[#F3D4E5]/80 dark:border-[#5a4f56] hover:border-[#FF4F93]/50 bg-white dark:bg-[#352630]'
                             }`}
                             onClick={() => selectItem(skill)}
                           >
@@ -317,21 +321,23 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                                 <GripVertical size={16} />
                               </span>
                             )}
-                            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-pink-soft/60 dark:bg-pink/15 text-pink">
-                              <Icon size={18} />
+                            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-[#FFF1F7] dark:bg-pink/15 text-[#FF4F93]">
+                              <Icon size={20} />
                             </span>
                             <div className="min-w-0 flex-1 pr-1">
-                              <p className="font-semibold text-sm text-ink truncate leading-tight">{skill.name}</p>
-                              <p className="text-[11px] text-muted truncate mt-0.5">{categoryLabel(skill.category)}</p>
+                              <p className="font-bold text-sm text-[#2C2C2C] dark:text-[#f7f2f5] truncate leading-tight">{skill.name}</p>
+                              <p className="text-[11px] text-[#7C7C7C] dark:text-[#c4b8be] truncate mt-0.5">{categoryLabel(skill.category)}</p>
                               <div className="mt-2 h-1.5 rounded-full bg-gray-200 dark:bg-[#4a3540] overflow-hidden">
-                                <div
-                                  className="h-full rounded-full bg-gradient-to-r from-pink to-pink-deep"
-                                  style={{ width: `${skill.level}%` }}
+                                <motion.div
+                                  className="h-full rounded-full bg-gradient-to-r from-[#FF5FA2] to-[#FF2D75]"
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${skill.level}%` }}
+                                  transition={{ duration: 0.4 }}
                                 />
                               </div>
                             </div>
                             <div className="shrink-0 flex flex-col items-end gap-1">
-                              <span className="text-sm font-bold text-pink">{skill.level}%</span>
+                              <span className="text-sm font-bold text-[#FF4F93]">{skill.level}%</span>
                               {isAuthenticated && (
                                 <ModalEditButton
                                   onClick={(e) => {
@@ -341,14 +347,14 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                                 />
                               )}
                             </div>
-                          </div>
+                          </motion.div>
                         );
                       })
                     )}
                   </div>
 
                   {isAuthenticated && (
-                    <p className="mt-4 flex items-center gap-1.5 text-[11px] text-pink font-medium">
+                    <p className="mt-6 flex items-center gap-1.5 text-xs text-[#FF4F93] font-medium shrink-0">
                       <Info size={12} className="shrink-0" />
                       Drag & drop untuk mengubah urutan keahlian.
                     </p>
@@ -356,26 +362,27 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                 </div>
 
                 {/* Right — form */}
-                <div className="p-5 sm:p-6 overflow-y-auto max-h-[70vh] lg:max-h-none">
+                <div className="p-9 overflow-y-auto min-h-0 bg-white dark:bg-[#2a1e26]">
                   {!selected && mode !== 'create' ? (
-                    <div className="h-full min-h-[300px] flex items-center justify-center text-muted text-sm">
+                    <div className="h-full min-h-[300px] flex items-center justify-center text-[#7C7C7C] dark:text-[#c4b8be] text-sm">
                       Pilih keahlian dari daftar di sebelah kiri.
                     </div>
                   ) : preview ? (
                     <PreviewPanel form={form} onClose={() => setPreview(false)} />
                   ) : isAuthenticated ? (
                     <div>
-                      <div className="flex items-center justify-between mb-5">
-                        <SectionTitle>
-                          Edit Keahlian <Sparkle size={10} />
+                      <div className="flex items-center justify-between mb-6">
+                        <SectionTitle size="large">
+                          Edit Keahlian <Sparkle size={12} className="text-gold" />
                         </SectionTitle>
                         <PreviewButton onClick={() => setPreview(true)} />
                       </div>
 
-                      <form onSubmit={handleSave} className="space-y-4">
+                      <form onSubmit={handleSave} className="space-y-5">
                         <FormField
                           label="Nama Keahlian"
                           icon={PenTool}
+                          variant="jobdesk"
                           value={form.name}
                           onChange={(v) => setForm({ ...form, name: v })}
                           required
@@ -390,11 +397,11 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                         />
 
                         <div>
-                          <label className="text-xs font-semibold text-muted mb-1.5 block">
+                          <label className="text-xs font-semibold text-[#7C7C7C] dark:text-[#c4b8be] mb-1.5 block">
                             Persentase Kemampuan
                           </label>
                           <div className="relative mb-2">
-                            <Star size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-pink/70 pointer-events-none" />
+                            <Star size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#FF4F93]/70 pointer-events-none" />
                             <input
                               type="number"
                               min={0}
@@ -406,9 +413,9 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                                   level: Math.min(100, Math.max(0, Number(e.target.value) || 0)),
                                 })
                               }
-                              className="modal-input w-full rounded-xl border border-pink-soft/70 bg-white dark:bg-[#352630] py-2.5 pl-9 pr-10 text-sm font-semibold text-ink outline-none focus:border-pink"
+                              className="modal-input w-full rounded-2xl border border-[#ECECEC] dark:border-[#5a4f56] bg-white dark:bg-[#352630] h-14 pl-11 pr-10 text-base font-semibold text-ink outline-none focus:border-[#FF4F93] focus:shadow-[0_0_0_3px_rgba(255,79,147,0.15)]"
                             />
-                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-bold text-pink">%</span>
+                            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-[#FF4F93]">%</span>
                           </div>
                           <input
                             type="range"
@@ -416,11 +423,11 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                             max={100}
                             value={form.level}
                             onChange={(e) => setForm({ ...form, level: Number(e.target.value) })}
-                            className="w-full accent-pink h-2 cursor-pointer"
+                            className="w-full accent-[#FF4F93] h-2 cursor-pointer"
                           />
                           <div className="mt-2 h-2 rounded-full bg-gray-200 dark:bg-[#4a3540] overflow-hidden">
                             <motion.div
-                              className="h-full rounded-full bg-gradient-to-r from-pink to-pink-deep"
+                              className="h-full rounded-full bg-gradient-to-r from-[#FF5FA2] to-[#FF2D75]"
                               animate={{ width: `${form.level}%` }}
                               transition={{ duration: 0.25 }}
                             />
@@ -428,21 +435,21 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                         </div>
 
                         <div>
-                          <label className="text-xs font-semibold text-muted mb-1.5 block">Deskripsi (opsional)</label>
+                          <label className="text-xs font-semibold text-[#7C7C7C] dark:text-[#c4b8be] mb-1.5 block">Deskripsi (opsional)</label>
                           <div className="relative">
-                            <FileText size={14} className="absolute left-3 top-3 text-pink/70" />
+                            <FileText size={16} className="absolute left-4 top-4 text-[#FF4F93]/70" />
                             <textarea
-                              rows={3}
+                              rows={4}
                               value={form.description}
                               onChange={(e) => setForm({ ...form, description: e.target.value })}
-                              placeholder="Deskripsi singkat tentang keahlian..."
-                              className="modal-input w-full rounded-xl border border-pink-soft/70 bg-white dark:bg-[#352630] py-2.5 pl-9 pr-4 text-sm text-ink outline-none focus:border-pink resize-none"
+                              placeholder="Deskripsi keahlian..."
+                              className="modal-input w-full rounded-2xl border border-[#ECECEC] dark:border-[#5a4f56] bg-white dark:bg-[#352630] min-h-[130px] py-3 pl-11 pr-4 text-base text-ink outline-none focus:border-[#FF4F93] focus:shadow-[0_0_0_3px_rgba(255,79,147,0.15)] resize-none"
                             />
                           </div>
                         </div>
 
                         <div>
-                          <label className="text-xs font-semibold text-muted mb-1.5 block">
+                          <label className="text-xs font-semibold text-[#7C7C7C] dark:text-[#c4b8be] mb-1.5 block">
                             Tools / Teknologi (opsional)
                           </label>
                           <div className="flex flex-wrap gap-2 mb-2">
@@ -464,9 +471,9 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                                 }
                               }}
                               placeholder="Nama tool..."
-                              className="modal-input flex-1 rounded-xl border border-pink-soft/70 bg-white dark:bg-[#352630] py-2 px-3 text-sm text-ink outline-none focus:border-pink"
+                              className="modal-input flex-1 rounded-2xl border border-[#ECECEC] dark:border-[#5a4f56] bg-white dark:bg-[#352630] h-12 px-4 text-sm text-ink outline-none focus:border-[#FF4F93]"
                             />
-                            <ModalAddButton onClick={addTool} className="!rounded-xl !px-3 !py-2 !text-xs">
+                            <ModalAddButton onClick={addTool} className="!rounded-2xl !px-4 !py-3 !text-sm">
                               Tambah
                             </ModalAddButton>
                           </div>
@@ -475,13 +482,15 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                         <FormField
                           label="Urutan"
                           icon={ListOrdered}
+                          variant="jobdesk"
                           type="number"
                           value={form.order}
                           onChange={(v) => setForm({ ...form, order: v })}
                           hint="Semakin kecil angka, semakin tinggi posisinya."
+                          className="sm:max-w-[200px]"
                         />
 
-                        <label className="flex items-center justify-between gap-3 rounded-xl border border-pink-soft/60 bg-pink-light/30 dark:bg-[#352630] px-4 py-3 cursor-pointer">
+                        <label className="flex items-center justify-between gap-3 rounded-2xl border border-[#F3D4E5] dark:border-pink-soft/40 bg-[#FFF1F7]/40 dark:bg-[#352630] px-4 py-3 cursor-pointer">
                           <span className="text-sm font-medium text-ink">
                             Aktif (Akan ditampilkan di halaman publik)
                           </span>
@@ -492,12 +501,13 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                               onChange={(e) => setForm({ ...form, isActive: e.target.checked })}
                               className="sr-only peer"
                             />
-                            <div className="w-11 h-6 rounded-full bg-pink-soft/80 peer-checked:bg-pink transition-colors" />
+                            <div className="w-11 h-6 rounded-full bg-[#F5D6E5] peer-checked:bg-[#FF4F93] transition-colors" />
                             <div className="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow peer-checked:translate-x-5 transition-transform" />
                           </div>
                         </label>
 
                         <ModalActions
+                          variant="jobdesk"
                           onCancel={() => {
                             if (selected) setForm(skillToForm(selected));
                             else onClose();

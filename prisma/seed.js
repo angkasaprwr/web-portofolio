@@ -320,7 +320,13 @@ async function main() {
       description:
         'Mengembangkan antarmuka website responsif menggunakan React dan Tailwind CSS. Berkolaborasi dengan desainer untuk mengimplementasikan design system.',
       shortDesc: 'Frontend development untuk berbagai klien.',
-      skills: ['React', 'Tailwind CSS', 'JavaScript', 'Git'],
+      skills: ['React', 'Tailwind CSS', 'JavaScript', 'Git', 'UI/UX Design', 'Figma', 'Prototype'],
+      responsibilities: [
+        'Merancang dan mengimplementasikan komponen UI responsif',
+        'Berkolaborasi dengan tim desain untuk design system',
+        'Melakukan code review dan optimasi performa',
+        'Mengintegrasikan API backend ke frontend',
+      ],
       startDate: new Date('2024-05-01'),
       endDate: null,
       isCurrent: true,

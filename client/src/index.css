@@ -534,7 +534,9 @@ html:not(.dark) .modal-panel .dark\:bg-\[\#352630\] {
   flex-shrink: 0;
 }
 .modal-btn-add:hover {
-  background: rgba(255, 214, 232, 0.45);
+  background: #ff4f93;
+  color: #ffffff;
+  border-color: #ff4f93;
 }
 
 .modal-btn-edit {
@@ -649,7 +651,8 @@ html.dark .modal-btn-add {
   border-color: #f857a6;
 }
 html.dark .modal-btn-add:hover {
-  background: rgba(248, 87, 166, 0.15);
+  background: #f857a6;
+  color: #ffffff;
 }
 
 html.dark .modal-btn-edit {
@@ -701,6 +704,128 @@ html.dark .modal-btn-close {
 }
 html.dark .modal-btn-close:hover {
   color: #f7f2f5;
+}
+
+/* Jobdesk modal — large save button */
+.modal-btn-save-lg {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 16px;
+  border: none;
+  height: 58px;
+  padding: 0 1.75rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(to right, #ff5fa2, #ff2d75);
+  box-shadow: 0 10px 20px rgba(255, 79, 147, 0.25);
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+.modal-btn-save-lg:hover:not(:disabled) {
+  transform: scale(1.03);
+  box-shadow: 0 12px 28px rgba(255, 79, 147, 0.4);
+}
+.modal-btn-save-lg:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Jobdesk skill chips */
+.modal-skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 9999px;
+  background: #fff1f7;
+  border: 1px solid #f3d4e5;
+  padding: 0.375rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #ff4f93;
+}
+.modal-skill-chip-remove {
+  display: grid;
+  place-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  color: #ff4f93;
+  opacity: 0.7;
+  cursor: pointer;
+}
+.modal-skill-chip-remove:hover {
+  opacity: 1;
+}
+html.dark .modal-skill-chip {
+  background: rgba(248, 87, 166, 0.12);
+  border-color: rgba(248, 87, 166, 0.3);
+  color: #ff9fd0;
+}
+
+/* Jobdesk info alert */
+.modal-info-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  border-radius: 16px;
+  background: #fff1f7;
+  padding: 0.875rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #ff4f93;
+  line-height: 1.4;
+}
+html.dark .modal-info-alert {
+  background: rgba(248, 87, 166, 0.1);
+  color: #ff9fd0;
+}
+
+html.dark .jobdesk-modal-panel .text-\[\#2C2C2C\] {
+  color: #f7f2f5;
+}
+
+html.dark .jobdesk-modal-panel .text-\[\#7C7C7C\] {
+  color: #c4b8be !important;
+}
+
+/* Jobdesk modal panel */
+.jobdesk-modal-panel {
+  width: 92%;
+  max-width: 1500px;
+  height: 88vh;
+  border-radius: 32px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+}
+.jobdesk-card {
+  min-height: 170px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(255, 79, 147, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.jobdesk-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(255, 79, 147, 0.14);
+}
+.jobdesk-upload-zone {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 16px;
+  border: 2px dashed #f3d4e5;
+  padding: 0.75rem 1rem;
+  transition: border-color 0.2s, background 0.2s;
+}
+.jobdesk-upload-zone:hover {
+  border-color: #ff4f93;
+  background: #fff1f7;
+}
+html.dark .jobdesk-upload-zone {
+  border-color: rgba(248, 87, 166, 0.35);
+}
+html.dark .jobdesk-upload-zone:hover {
+  background: rgba(248, 87, 166, 0.08);
+  border-color: #f857a6;
 }
 
 html.dark .text-gold,

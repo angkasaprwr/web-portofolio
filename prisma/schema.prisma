@@ -123,6 +123,7 @@ model Experience {
   shortDesc     String?           @map("short_desc") @db.Text
   thumbnail     String?
   skills        Json?
+  responsibilities Json?
   documentUrl   String?           @map("document_url")
   startDate     DateTime          @map("start_date")
   endDate       DateTime?         @map("end_date")

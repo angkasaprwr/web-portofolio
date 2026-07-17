@@ -55,13 +55,26 @@ const coerceProjectBody = (body) => {
   return next;
 };
 
+const toDateTime = (val) => {
+  if (!val) return null;
+  if (val instanceof Date) return val;
+  const s = String(val).trim();
+  if (!s) return null;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return new Date(`${s}T00:00:00.000Z`);
+  const d = new Date(s);
+  return Number.isNaN(d.getTime()) ? null : d;
+};
+
 const coerceExperienceBody = (body) => {
   const next = { ...body };
   if (next.skills !== undefined) next.skills = parseMaybeJsonArray(next.skills);
+  if (next.responsibilities !== undefined) next.responsibilities = parseMaybeJsonArray(next.responsibilities);
   if (next.isCurrent !== undefined) next.isCurrent = coerceBool(next.isCurrent);
   if (next.isActive !== undefined) next.isActive = coerceBool(next.isActive);
   if (next.order !== undefined) next.order = Number(next.order) || 0;
-  if (next.endDate === '') next.endDate = null;
+  if (next.startDate !== undefined) next.startDate = toDateTime(next.startDate);
+  if (next.endDate === '' || next.endDate === null) next.endDate = null;
+  else if (next.endDate !== undefined) next.endDate = toDateTime(next.endDate);
   return next;
 };
 

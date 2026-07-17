@@ -12,6 +12,7 @@ import {
   ChevronDown,
   Send,
   Search,
+  Pencil,
 } from 'lucide-react';
 import SEO from '../../components/common/SEO';
 import { FadeUp, ScaleIn } from '../../components/common/Motion';
@@ -19,6 +20,8 @@ import { Sparkle, Blob } from '../../components/common/Decorations';
 import { CardSkeleton, PageSkeleton } from '../../components/common/Skeleton';
 import { useAbout, useExperiences, useExperienceCategories } from '../../hooks/usePortfolio';
 import { assetUrl } from '../../lib/api';
+import { useAuth } from '../../context/AuthContext';
+import ExperienceCategoryModal from '../../components/experience/ExperienceCategoryModal';
 
 const categoryIcons = {
   Magang: Briefcase,
@@ -34,12 +37,25 @@ const formatDate = (date) => {
 };
 
 export default function ExperiencePage() {
+  const { isAuthenticated } = useAuth();
   const [params, setParams] = useSearchParams();
   const category = params.get('category') || 'Semua';
   const type = params.get('type') || '';
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('newest');
   const [page, setPage] = useState(1);
+  const [expModalCategory, setExpModalCategory] = useState(null);
+
+  const openCategoryModal = (cat, expType) => {
+    setPage(1);
+    const next = new URLSearchParams(params);
+    if (expType) next.set('type', expType);
+    else next.delete('type');
+    if (cat && cat !== 'Semua') next.set('category', cat);
+    else next.delete('category');
+    setParams(next);
+    setExpModalCategory(cat);
+  };
 
   const query = useMemo(
     () => ({
@@ -135,12 +151,29 @@ export default function ExperiencePage() {
                   <button
                     key={item.category}
                     type="button"
-                    onClick={() => {
-                      setFilter('type', 'Formal');
-                      setFilter('category', item.category);
-                    }}
-                    className="card-premium p-5 text-left border border-pink-soft/60"
+                    onClick={() => openCategoryModal(item.category, 'Formal')}
+                    className="card-premium p-5 text-left border border-pink-soft/60 relative group"
                   >
+                    {isAuthenticated && (
+                      <span
+                        role="button"
+                        tabIndex={0}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openCategoryModal(item.category, 'Formal');
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.stopPropagation();
+                            openCategoryModal(item.category, 'Formal');
+                          }
+                        }}
+                        className="absolute top-3 right-3 grid h-8 w-8 place-items-center rounded-lg bg-pink/10 text-pink opacity-0 group-hover:opacity-100 transition"
+                        aria-label={`Kelola ${item.category}`}
+                      >
+                        <Pencil size={14} />
+                      </span>
+                    )}
                     <div className="grid h-11 w-11 place-items-center rounded-2xl bg-pink/10 text-pink mb-3">
                       <Icon size={18} />
                     </div>
@@ -163,12 +196,29 @@ export default function ExperiencePage() {
                   <button
                     key={item.category}
                     type="button"
-                    onClick={() => {
-                      setFilter('type', 'Informal');
-                      setFilter('category', item.category);
-                    }}
-                    className="card-premium p-5 text-left border border-pink-soft/60"
+                    onClick={() => openCategoryModal(item.category, 'Informal')}
+                    className="card-premium p-5 text-left border border-pink-soft/60 relative group"
                   >
+                    {isAuthenticated && (
+                      <span
+                        role="button"
+                        tabIndex={0}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openCategoryModal(item.category, 'Informal');
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.stopPropagation();
+                            openCategoryModal(item.category, 'Informal');
+                          }
+                        }}
+                        className="absolute top-3 right-3 grid h-8 w-8 place-items-center rounded-lg bg-pink/10 text-pink opacity-0 group-hover:opacity-100 transition"
+                        aria-label={`Kelola ${item.category}`}
+                      >
+                        <Pencil size={14} />
+                      </span>
+                    )}
                     <div className="grid h-11 w-11 place-items-center rounded-2xl bg-gold/10 text-gold mb-3">
                       <Icon size={18} />
                     </div>
@@ -250,9 +300,18 @@ export default function ExperiencePage() {
                       <span className="text-xs font-semibold text-pink bg-pink-soft/70 px-3 py-1 rounded-full">
                         {exp.category}
                       </span>
-                      <span className="text-xs text-pink font-medium">
-                        {formatDate(exp.startDate)} - {exp.isCurrent ? 'Sekarang' : formatDate(exp.endDate)}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setExpModalCategory(exp.category)}
+                          className="text-xs font-semibold text-pink hover:underline"
+                        >
+                          Lihat Selengkapnya
+                        </button>
+                        <span className="text-xs text-pink font-medium">
+                          {formatDate(exp.startDate)} - {exp.isCurrent ? 'Sekarang' : formatDate(exp.endDate)}
+                        </span>
+                      </div>
                     </div>
                     <div className="flex gap-4">
                       <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-pink/10 text-pink font-semibold">
@@ -277,9 +336,13 @@ export default function ExperiencePage() {
                       </div>
                     </div>
                     <div className="flex items-center justify-between mt-auto pt-2">
-                      <Link to={`/pengalaman/${exp.id}`} className="text-sm font-semibold text-pink inline-flex items-center gap-1">
-                        Lihat Detail <ArrowRight size={14} />
-                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => setExpModalCategory(exp.category)}
+                        className="text-sm font-semibold text-pink inline-flex items-center gap-1 hover:underline"
+                      >
+                        Lihat Selengkapnya <ArrowRight size={14} />
+                      </button>
                       <Bookmark size={16} className="text-muted" />
                     </div>
                   </article>
@@ -311,6 +374,12 @@ export default function ExperiencePage() {
           </div>
         </div>
       </section>
+
+      <ExperienceCategoryModal
+        open={!!expModalCategory}
+        category={expModalCategory || 'Jobdesk'}
+        onClose={() => setExpModalCategory(null)}
+      />
     </>
   );
 }
