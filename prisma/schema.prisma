@@ -1,0 +1,242 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id           String        @id @default(cuid())
+  email        String        @unique
+  password     String
+  name         String
+  avatar       String?
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  sessions     Session[]
+  activityLogs ActivityLog[]
+
+  @@map("admins")
+}
+
+model About {
+  id              String   @id @default(cuid())
+  fullName        String   @map("full_name")
+  shortName       String?  @map("short_name")
+  profession      String
+  headline        String?
+  bio             String   @db.Text
+  shortBio        String?  @map("short_bio") @db.Text
+  story           String?  @db.Text
+  quote           String?  @db.Text
+  birthDate       DateTime? @map("birth_date")
+  education       String?
+  photo           String?
+  heroPhoto       String?  @map("hero_photo")
+  yearsExperience Int      @default(0) @map("years_experience")
+  projectsCount   Int      @default(0) @map("projects_count")
+  clientsCount    Int      @default(0) @map("clients_count")
+  commitment      String   @default("100%")
+  hobbies         Json?
+  educationTimeline Json?  @map("education_timeline")
+  isActive        Boolean  @default(true) @map("is_active")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("about")
+}
+
+model Skill {
+  id          String   @id @default(cuid())
+  name        String
+  category    String
+  level       Int      @default(80)
+  icon        String?
+  description String?  @db.Text
+  color       String?
+  order       Int      @default(0)
+  isFeatured  Boolean  @default(false) @map("is_featured")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([category])
+  @@index([order])
+  @@map("skills")
+}
+
+model Project {
+  id          String         @id @default(cuid())
+  title       String
+  slug        String         @unique
+  category    String
+  description String         @db.Text
+  shortDesc   String?        @map("short_desc") @db.Text
+  thumbnail   String?
+  techStack   Json?          @map("tech_stack")
+  githubUrl   String?        @map("github_url")
+  demoUrl     String?        @map("demo_url")
+  role        String?
+  status      String         @default("completed")
+  startDate   DateTime?      @map("start_date")
+  endDate     DateTime?      @map("end_date")
+  featured    Boolean        @default(false)
+  order       Int            @default(0)
+  views       Int            @default(0)
+  isActive    Boolean        @default(true) @map("is_active")
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime       @updatedAt @map("updated_at")
+  images      ProjectImage[]
+
+  @@index([category])
+  @@index([featured])
+  @@index([slug])
+  @@map("projects")
+}
+
+model ProjectImage {
+  id        String   @id @default(cuid())
+  projectId String   @map("project_id")
+  url       String
+  caption   String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@map("project_images")
+}
+
+model Experience {
+  id            String            @id @default(cuid())
+  title         String
+  company       String
+  location      String?
+  type          String
+  category      String
+  description   String            @db.Text
+  shortDesc     String?           @map("short_desc") @db.Text
+  thumbnail     String?
+  skills        Json?
+  documentUrl   String?           @map("document_url")
+  startDate     DateTime          @map("start_date")
+  endDate       DateTime?         @map("end_date")
+  isCurrent     Boolean           @default(false) @map("is_current")
+  order         Int               @default(0)
+  isActive      Boolean           @default(true) @map("is_active")
+  createdAt     DateTime          @default(now()) @map("created_at")
+  updatedAt     DateTime          @updatedAt @map("updated_at")
+  images        ExperienceImage[]
+
+  @@index([type])
+  @@index([category])
+  @@map("experiences")
+}
+
+model ExperienceImage {
+  id           String     @id @default(cuid())
+  experienceId String     @map("experience_id")
+  url          String
+  caption      String?
+  order        Int        @default(0)
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+  experience   Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+
+  @@index([experienceId])
+  @@map("experience_images")
+}
+
+model Certificate {
+  id          String    @id @default(cuid())
+  title       String
+  issuer      String
+  description String?   @db.Text
+  image       String?
+  credentialUrl String? @map("credential_url")
+  issueDate   DateTime? @map("issue_date")
+  expiryDate  DateTime? @map("expiry_date")
+  order       Int       @default(0)
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@map("certificates")
+}
+
+model SocialLink {
+  id        String   @id @default(cuid())
+  platform  String
+  label     String?
+  url       String
+  icon      String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([platform])
+  @@map("social_links")
+}
+
+model CvFile {
+  id        String   @id @default(cuid())
+  title     String
+  fileName  String   @map("file_name")
+  fileUrl   String   @map("file_url")
+  fileSize  Int?     @map("file_size")
+  mimeType  String?  @map("mime_type")
+  version   String?
+  isActive  Boolean  @default(true) @map("is_active")
+  downloads Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("cv_files")
+}
+
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     Json
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("settings")
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  adminId   String?  @map("admin_id")
+  action    String
+  entity    String?
+  entityId  String?  @map("entity_id")
+  details   Json?
+  ipAddress String?  @map("ip_address")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  admin     Admin?   @relation(fields: [adminId], references: [id], onDelete: SetNull)
+
+  @@index([adminId])
+  @@index([createdAt])
+  @@map("activity_logs")
+}
+
+model Session {
+  id               String   @id @default(cuid())
+  adminId          String   @map("admin_id")
+  refreshToken     String   @unique @map("refresh_token")
+  userAgent        String?  @map("user_agent")
+  ipAddress        String?  @map("ip_address")
+  expiresAt        DateTime @map("expires_at")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  admin            Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@index([adminId])
+  @@index([expiresAt])
+  @@map("sessions")
+}
