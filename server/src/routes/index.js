@@ -9,6 +9,10 @@ const {
   skillController,
   projectController,
   experienceController,
+ cursor/portfolio-website-980a
+  educationController,
+
+ main
   certificateController,
   socialController,
   cvController,
@@ -52,6 +56,11 @@ router.get('/projects/:id', projectController.get);
 router.get('/experiences', experienceController.list);
 router.get('/experiences/categories', experienceController.categories);
 router.get('/experiences/:id', experienceController.get);
+ cursor/portfolio-website-980a
+router.get('/educations', educationController.list);
+router.get('/educations/:id', educationController.get);
+
+ main
 router.get('/certificates', certificateController.list);
 router.get('/certificates/:id', certificateController.get);
 router.get('/social-links', socialController.list);
@@ -71,7 +80,16 @@ router.get('/dashboard', dashboardController.overview);
 router.put('/about', aboutValidator, validate, aboutController.upsert);
 router.patch('/about/:id', aboutValidator, validate, aboutController.update);
 
+ cursor/portfolio-website-980a
+router.post('/educations', educationController.create);
+router.put('/educations/:id', educationController.update);
+router.delete('/educations/:id', educationController.remove);
+
 router.post('/skills', skillValidator, validate, skillController.create);
+router.put('/skills/reorder', skillController.reorder);
+
+router.post('/skills', skillValidator, validate, skillController.create);
+ main
 router.put('/skills/:id', skillValidator, validate, skillController.update);
 router.delete('/skills/:id', skillController.remove);
 
