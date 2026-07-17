@@ -19,7 +19,10 @@ export const skillsApi = {
   create: (data) => api.post('/skills', data),
   update: (id, data) => api.put(`/skills/${id}`, data),
   remove: (id) => api.delete(`/skills/${id}`),
+ cursor/portfolio-website-980a
   reorder: (orders) => api.put('/skills/reorder', { orders }),
+
+ main
 };
 
 export const projectsApi = {

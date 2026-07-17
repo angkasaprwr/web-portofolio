@@ -4,7 +4,10 @@ const {
   skillService,
   projectService,
   experienceService,
+ cursor/portfolio-website-980a
   educationService,
+
+ main
   certificateService,
   socialService,
   cvService,
@@ -146,10 +149,13 @@ const skillController = {
     const data = await skillService.categories();
     return successResponse(res, { data });
   }),
+ cursor/portfolio-website-980a
   reorder: asyncHandler(async (req, res) => {
     await skillService.reorder(req, req.body.orders);
     return successResponse(res, { message: 'Urutan skill diperbarui' });
   }),
+
+ main
 };
 
 /* Projects */
@@ -241,6 +247,7 @@ const experienceController = {
   }),
 };
 
+ cursor/portfolio-website-980a
 /* Education */
 const educationController = {
   list: asyncHandler(async (req, res) => {
@@ -277,6 +284,8 @@ const educationController = {
   }),
 };
 
+
+ main
 /* Certificates */
 const certificateController = {
   list: asyncHandler(async (req, res) => {
@@ -428,7 +437,10 @@ module.exports = {
   skillController,
   projectController,
   experienceController,
+ cursor/portfolio-website-980a
   educationController,
+
+ main
   certificateController,
   socialController,
   cvController,

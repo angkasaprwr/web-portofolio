@@ -129,6 +129,7 @@
   }
 }
 
+ cursor/portfolio-website-980a
 /* Dark mode — readable text & surfaces across all public pages */
 html.dark {
   color-scheme: dark;
@@ -165,10 +166,33 @@ html.dark .card-premium {
   background: rgba(42, 30, 38, 0.95);
   border-color: rgba(248, 87, 166, 0.22);
   color: var(--color-ink);
+=======
+/* Dark mode */
+.dark body,
+html.dark body {
+  background: #1a1218;
+  color: #f5f0f2;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark .glass,
+html.dark .glass-strong {
+  background: rgba(40, 28, 35, 0.75);
+  border-color: rgba(248, 87, 166, 0.2);
+}
+
+html.dark .card-premium {
+  background: rgba(40, 28, 35, 0.85);
+  border-color: rgba(248, 87, 166, 0.15);
+ main
 }
 
 html.dark .bg-hero {
   background:
+ cursor/portfolio-website-980a
     radial-gradient(ellipse 80% 60% at 10% 20%, rgba(248, 87, 166, 0.18), transparent 55%),
     radial-gradient(ellipse 70% 50% at 90% 10%, rgba(212, 175, 55, 0.1), transparent 50%),
     linear-gradient(180deg, #1a1218 0%, #241820 55%, #1a1218 100%);
@@ -394,6 +418,11 @@ html.dark span.bg-pink-soft\/70,
 html.dark span.rounded-full.bg-pink-soft\/70 {
   background-color: rgba(248, 87, 166, 0.22) !important;
   color: #ffc2df !important;
+
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(248, 87, 166, 0.2), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 90% 10%, rgba(212, 175, 55, 0.12), transparent 50%),
+    linear-gradient(180deg, #1a1218 0%, #241820 100%);
+ main
 }
 
 /* Swiper overrides */
@@ -401,6 +430,7 @@ html.dark span.rounded-full.bg-pink-soft\/70 {
   background: #F857A6 !important;
 }
 
+ cursor/portfolio-website-980a
 html.dark .swiper-button-next,
 html.dark .swiper-button-prev {
   color: #ff9fd0 !important;
@@ -416,6 +446,8 @@ html.dark .swiper-pagination-bullet-active {
   opacity: 1;
 }
 
+
+ main
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -430,6 +462,7 @@ html.dark .swiper-pagination-bullet-active {
 ::-webkit-scrollbar-thumb:hover {
   background: #F857A6;
 }
+ cursor/portfolio-website-980a
 
 html.dark ::-webkit-scrollbar-track {
   background: #1a1218;
@@ -440,3 +473,5 @@ html.dark ::-webkit-scrollbar-thumb {
 html.dark ::-webkit-scrollbar-thumb:hover {
   background: #f857a6;
 }
+
+ main

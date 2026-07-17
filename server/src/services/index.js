@@ -3,7 +3,10 @@ const {
   SkillRepository,
   ProjectRepository,
   ExperienceRepository,
+ cursor/portfolio-website-980a
   EducationRepository,
+
+ main
   CertificateRepository,
   SocialLinkRepository,
   CvFileRepository,
@@ -18,7 +21,10 @@ const aboutRepo = new AboutRepository();
 const skillRepo = new SkillRepository();
 const projectRepo = new ProjectRepository();
 const experienceRepo = new ExperienceRepository();
+ cursor/portfolio-website-980a
 const educationRepo = new EducationRepository();
+
+ main
 const certificateRepo = new CertificateRepository();
 const socialRepo = new SocialLinkRepository();
 const cvRepo = new CvFileRepository();
@@ -114,6 +120,7 @@ const skillService = {
     });
     return skills.map((s) => s.category);
   },
+ cursor/portfolio-website-980a
   async reorder(req, orders) {
     if (!Array.isArray(orders) || orders.length === 0) {
       throw new ApiError(400, 'Data urutan tidak valid');
@@ -126,6 +133,8 @@ const skillService = {
     await logActivity(req, 'UPDATE', 'skill', 'reorder', { count: orders.length });
     return true;
   },
+
+ main
 };
 
 /* ───────────── Projects ───────────── */
@@ -297,6 +306,7 @@ const experienceService = {
   },
 };
 
+ cursor/portfolio-website-980a
 /* ───────────── Education ───────────── */
 const educationService = {
   async list({ all } = {}) {
@@ -325,6 +335,8 @@ const educationService = {
   },
 };
 
+
+ main
 /* ───────────── Certificates ───────────── */
 const certificateService = {
   async list({ page, limit, search, all }) {
@@ -528,7 +540,10 @@ module.exports = {
   skillService,
   projectService,
   experienceService,
+ cursor/portfolio-website-980a
   educationService,
+
+ main
   certificateService,
   socialService,
   cvService,

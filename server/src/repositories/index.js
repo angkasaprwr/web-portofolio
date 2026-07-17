@@ -60,12 +60,15 @@ class ExperienceRepository extends BaseRepository {
   }
 }
 
+ cursor/portfolio-website-980a
 class EducationRepository extends BaseRepository {
   constructor() {
     super('education');
   }
 }
 
+
+ main
 class CertificateRepository extends BaseRepository {
   constructor() {
     super('certificate');
@@ -135,7 +138,10 @@ module.exports = {
   SkillRepository,
   ProjectRepository,
   ExperienceRepository,
+ cursor/portfolio-website-980a
   EducationRepository,
+
+ main
   CertificateRepository,
   SocialLinkRepository,
   CvFileRepository,

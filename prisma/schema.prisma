@@ -55,7 +55,10 @@ model Skill {
   level       Int      @default(80)
   icon        String?
   description String?  @db.Text
+ cursor/portfolio-website-980a
   tools       Json?
+
+ main
   color       String?
   order       Int      @default(0)
   isFeatured  Boolean  @default(false) @map("is_featured")
@@ -151,6 +154,7 @@ model ExperienceImage {
   @@map("experience_images")
 }
 
+ cursor/portfolio-website-980a
 model Education {
   id          String    @id @default(cuid())
   institution String
@@ -172,6 +176,8 @@ model Education {
   @@map("educations")
 }
 
+
+ main
 model Certificate {
   id          String    @id @default(cuid())
   title       String
