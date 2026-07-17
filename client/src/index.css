@@ -129,38 +129,291 @@
   }
 }
 
-/* Dark mode */
-.dark body,
-html.dark body {
-  background: #1a1218;
-  color: #f5f0f2;
-}
-
+/* Dark mode — readable text & surfaces across all public pages */
 html.dark {
   color-scheme: dark;
+  --color-ink: #F7F2F5;
+  --color-muted: #D2C6CD;
+  --color-pink-light: #1A1218;
+  --color-pink-soft: #3D2A35;
+  --color-gold-soft: #3D3420;
+  --color-glass: rgba(36, 26, 32, 0.88);
+  --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.35);
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.28);
 }
 
+html.dark body,
+.dark body {
+  background: #1a1218;
+  color: var(--color-ink);
+}
+
+html.dark ::selection {
+  background: rgba(248, 87, 166, 0.35);
+  color: #fff;
+}
+
+/* Surfaces that stay “white” in light mode */
 html.dark .glass,
 html.dark .glass-strong {
-  background: rgba(40, 28, 35, 0.75);
-  border-color: rgba(248, 87, 166, 0.2);
+  background: rgba(36, 26, 32, 0.9);
+  border-color: rgba(248, 87, 166, 0.28);
+  color: var(--color-ink);
 }
 
 html.dark .card-premium {
-  background: rgba(40, 28, 35, 0.85);
-  border-color: rgba(248, 87, 166, 0.15);
+  background: rgba(42, 30, 38, 0.95);
+  border-color: rgba(248, 87, 166, 0.22);
+  color: var(--color-ink);
 }
 
 html.dark .bg-hero {
   background:
-    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(248, 87, 166, 0.2), transparent 55%),
-    radial-gradient(ellipse 70% 50% at 90% 10%, rgba(212, 175, 55, 0.12), transparent 50%),
-    linear-gradient(180deg, #1a1218 0%, #241820 100%);
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(248, 87, 166, 0.18), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 90% 10%, rgba(212, 175, 55, 0.1), transparent 50%),
+    linear-gradient(180deg, #1a1218 0%, #241820 55%, #1a1218 100%);
+}
+
+html.dark .bg-pink-mesh {
+  background:
+    radial-gradient(circle at 20% 30%, rgba(248, 87, 166, 0.18), transparent 40%),
+    radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.1), transparent 35%),
+    linear-gradient(135deg, #1a1218, #241820);
+}
+
+html.dark .btn-ghost {
+  background: rgba(42, 30, 38, 0.75);
+  border-color: rgba(248, 87, 166, 0.45);
+  color: #ff9fd0;
+}
+
+html.dark .btn-ghost:hover {
+  background: rgba(248, 87, 166, 0.18);
+  border-color: #f857a6;
+  color: #ffc2df;
+}
+
+html.dark .btn-outline {
+  color: #ff9fd0;
+  border-color: #f857a6;
+}
+
+html.dark .btn-outline:hover {
+  background: #f857a6;
+  color: #ffffff;
+}
+
+html.dark .label-gold {
+  color: #e8c96a;
+}
+
+html.dark .skeleton {
+  background: rgba(61, 42, 53, 0.7);
+}
+
+/* Force readable contrast on common light-only utility backgrounds */
+html.dark .bg-white,
+html.dark .bg-white\/40,
+html.dark .bg-white\/50,
+html.dark .bg-white\/60,
+html.dark .bg-white\/70,
+html.dark .bg-white\/80,
+html.dark .bg-white\/90 {
+  background-color: rgba(42, 30, 38, 0.92) !important;
+  color: var(--color-ink);
+}
+
+html.dark .bg-pink-light\/50,
+html.dark .bg-pink-light\/60,
+html.dark .bg-pink-light\/80 {
+  background-color: rgba(36, 26, 32, 0.85) !important;
+}
+
+html.dark .bg-pink-soft\/40,
+html.dark .bg-pink-soft\/50,
+html.dark .bg-pink-soft\/60,
+html.dark .bg-pink-soft\/70,
+html.dark .bg-pink-soft\/80 {
+  background-color: rgba(248, 87, 166, 0.18) !important;
+  color: #ffc2df;
+}
+
+html.dark .text-ink,
+html.dark .text-ink\/70 {
+  color: #f7f2f5 !important;
+}
+
+html.dark .text-muted {
+  color: #d2c6cd !important;
+}
+
+html.dark .text-pink {
+  color: #ff9fd0 !important;
+}
+
+html.dark .border-pink-soft,
+html.dark .border-pink-soft\/40,
+html.dark .border-pink-soft\/50,
+html.dark .border-pink-soft\/60,
+html.dark .border-pink-soft\/70 {
+  border-color: rgba(248, 87, 166, 0.28) !important;
+}
+
+html.dark .border-white,
+html.dark .border-white\/80 {
+  border-color: rgba(248, 87, 166, 0.2) !important;
+}
+
+/* Form controls & filter chips */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background-color: rgba(42, 30, 38, 0.95) !important;
+  color: #f7f2f5 !important;
+  border-color: rgba(248, 87, 166, 0.35) !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #b7a8b0 !important;
+}
+
+html.dark option {
+  background-color: #2a1e26;
+  color: #f7f2f5;
+}
+
+/* Keep primary pink buttons & CTA banners readable */
+html.dark .btn-primary {
+  color: #ffffff;
+}
+
+html.dark .text-white,
+html.dark .text-white\/80 {
+  color: #ffffff !important;
+}
+
+/* White CTA pills on pink banners must stay bright for contrast */
+html.dark a[class*="!bg-white"],
+html.dark button[class*="!bg-white"],
+html.dark a.rounded-full.bg-white.text-pink,
+html.dark a.rounded-full.bg-white.font-semibold {
+  background-color: #ffffff !important;
+}
+
+html.dark a[class*="!text-pink"],
+html.dark button[class*="!text-pink"],
+html.dark a.rounded-full.bg-white.text-pink {
+  color: #e03d8a !important;
+}
+
+/* Footer & section readability */
+html.dark footer,
+html.dark footer a,
+html.dark footer p,
+html.dark footer li,
+html.dark footer h4 {
+  color: #f0e8ec;
+}
+
+html.dark footer .text-muted,
+html.dark footer p.text-muted,
+html.dark footer ul,
+html.dark footer .text-sm {
+  color: #d2c6cd !important;
+}
+
+html.dark footer .font-display,
+html.dark footer .text-pink,
+html.dark footer a.text-pink {
+  color: #ff9fd0 !important;
+}
+
+html.dark footer .bg-pink,
+html.dark footer .bg-pink.text-white {
+  background-color: #f857a6 !important;
+  color: #ffffff !important;
+}
+
+html.dark footer .bg-pink span,
+html.dark footer .bg-pink * {
+  color: inherit;
+}
+
+html.dark footer .bg-pink {
+  color: #ffffff !important;
+}
+
+/* Navbar links readable on dark glass */
+html.dark nav a,
+html.dark nav button {
+  color: #f0e8ec;
+}
+
+html.dark nav .text-ink\/70 {
+  color: #d2c6cd !important;
+}
+
+html.dark nav .text-pink {
+  color: #ff9fd0 !important;
+}
+
+/* Filter chips / inactive pills */
+html.dark button.bg-white,
+html.dark button.border.border-pink-soft {
+  color: #f7f2f5;
+}
+
+html.dark button.bg-pink.text-white,
+html.dark a.bg-pink.text-white {
+  background-color: #f857a6 !important;
+  color: #ffffff !important;
+}
+
+/* Card body text defaults */
+html.dark article,
+html.dark article h3,
+html.dark .card-premium h3,
+html.dark .card-premium p,
+html.dark .card-premium span {
+  color: inherit;
+}
+
+html.dark .card-premium .text-muted {
+  color: #d2c6cd !important;
+}
+
+html.dark .card-premium .text-pink,
+html.dark .card-premium a.text-pink {
+  color: #ff9fd0 !important;
+}
+
+/* Soft pink badge chips: keep pink text readable on tinted dark bg */
+html.dark .bg-pink-soft\/70.text-pink,
+html.dark span.bg-pink-soft\/70,
+html.dark span.rounded-full.bg-pink-soft\/70 {
+  background-color: rgba(248, 87, 166, 0.22) !important;
+  color: #ffc2df !important;
 }
 
 /* Swiper overrides */
 .swiper-pagination-bullet-active {
   background: #F857A6 !important;
+}
+
+html.dark .swiper-button-next,
+html.dark .swiper-button-prev {
+  color: #ff9fd0 !important;
+}
+
+html.dark .swiper-pagination-bullet {
+  background: #d2c6cd !important;
+  opacity: 0.5;
+}
+
+html.dark .swiper-pagination-bullet-active {
+  background: #F857A6 !important;
+  opacity: 1;
 }
 
 /* Custom scrollbar */
@@ -176,4 +429,14 @@ html.dark .bg-hero {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #F857A6;
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background: #1a1218;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: #3d2a35;
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #f857a6;
 }
