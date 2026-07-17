@@ -28,7 +28,7 @@ export function ModalHeader({ icon: Icon, title, subtitle, onClose, iconShape = 
       <button
         type="button"
         onClick={onClose}
-        className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-pink-soft/60 bg-white dark:bg-[#352630] text-muted hover:text-ink hover:bg-pink-soft/30 transition"
+        className="modal-btn-close grid h-10 w-10 shrink-0 place-items-center rounded-full border border-pink-soft/60 bg-white dark:bg-[#352630] text-muted hover:text-ink hover:bg-pink-soft/30 transition"
         aria-label="Tutup"
       >
         <span className="sr-only">Tutup</span>
@@ -48,13 +48,10 @@ export function SectionTitle({ children }) {
   );
 }
 
+/** Gold-outline Preview pill — mockup */
 export function PreviewButton({ onClick }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="inline-flex items-center gap-1.5 rounded-full border border-gold bg-white dark:bg-[#352630] px-3.5 py-1.5 text-xs font-semibold text-gold hover:bg-gold-soft/40 transition"
-    >
+    <button type="button" onClick={onClick} className="modal-btn-preview">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
         <circle cx="12" cy="12" r="3" />
@@ -64,12 +61,49 @@ export function PreviewButton({ onClick }) {
   );
 }
 
+/** Pink-outline add pill in list header */
+export function ModalAddButton({ onClick, children, className = '' }) {
+  return (
+    <button type="button" onClick={onClick} className={`modal-btn-add ${className}`.trim()}>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+        <path d="M12 5v14M5 12h14" />
+      </svg>
+      {children}
+    </button>
+  );
+}
+
+/** Pink square edit button on list cards */
+export function ModalEditButton({ onClick, label = 'Edit' }) {
+  return (
+    <button type="button" onClick={onClick} className="modal-btn-edit" aria-label={label}>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M12 20h9M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4L16.5 3.5z" />
+      </svg>
+    </button>
+  );
+}
+
+/** Gray tool/tag chip with remove */
+export function ModalTag({ children, onRemove }) {
+  return (
+    <span className="modal-tag">
+      {children}
+      {onRemove && (
+        <button type="button" onClick={onRemove} className="modal-tag-remove" aria-label="Hapus">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+      )}
+    </span>
+  );
+}
+
 export function FormField({ label, icon: Icon, value, onChange, placeholder, type = 'text', required, disabled, hint }) {
   return (
     <div>
-      {label && (
-        <label className="text-xs font-semibold text-muted mb-1.5 block">{label}</label>
-      )}
+      {label && <label className="text-xs font-semibold text-muted mb-1.5 block">{label}</label>}
       <div className="relative">
         {Icon && (
           <Icon size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-pink/70 pointer-events-none" />
@@ -124,34 +158,23 @@ export function FormSelect({ label, icon: Icon, value, onChange, options }) {
   );
 }
 
+/** Footer actions: Batal | Hapus | Simpan Perubahan — shared across all floating cards */
 export function ModalActions({ onCancel, onDelete, saving, showDelete }) {
   return (
-    <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-pink-soft/40">
-      <button
-        type="button"
-        onClick={onCancel}
-        className="rounded-xl px-4 py-2.5 text-sm font-medium text-muted hover:text-ink hover:bg-pink-soft/20 transition"
-      >
+    <div className="modal-actions flex flex-wrap items-center gap-3 pt-4 border-t border-pink-soft/40">
+      <button type="button" onClick={onCancel} className="modal-btn-cancel">
         Batal
       </button>
       <div className="flex-1" />
       {showDelete && (
-        <button
-          type="button"
-          onClick={onDelete}
-          className="inline-flex items-center gap-1.5 rounded-xl border-2 border-red-400/70 bg-white dark:bg-[#352630] px-4 py-2.5 text-sm font-semibold text-red-500 hover:bg-red-500 hover:text-white hover:border-red-500 transition"
-        >
+        <button type="button" onClick={onDelete} className="modal-btn-delete">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
           </svg>
           Hapus
         </button>
       )}
-      <button
-        type="submit"
-        disabled={saving}
-        className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-pink to-pink-deep px-5 py-2.5 text-sm font-semibold text-white shadow-glow hover:shadow-[0_0_30px_rgba(248,87,166,0.45)] transition disabled:opacity-60"
-      >
+      <button type="submit" disabled={saving} className="modal-btn-save">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
           <path d="M20 6L9 17l-5-5" />
         </svg>

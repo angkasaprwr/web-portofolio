@@ -4,8 +4,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import {
   BarChart3,
-  Pencil,
-  Plus,
   Eye,
   GripVertical,
   PenTool,
@@ -19,7 +17,6 @@ import {
   ListOrdered,
   Info,
   Sparkles,
-  X,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useSkills } from '../../hooks/usePortfolio';
@@ -30,6 +27,9 @@ import {
   ModalHeader,
   SectionTitle,
   PreviewButton,
+  ModalAddButton,
+  ModalEditButton,
+  ModalTag,
   FormField,
   FormSelect,
   ModalActions,
@@ -284,13 +284,7 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                       Daftar Keahlian <Sparkle size={10} />
                     </SectionTitle>
                     {isAuthenticated && (
-                      <button
-                        type="button"
-                        onClick={startCreate}
-                        className="inline-flex items-center gap-1 rounded-full border border-pink px-2.5 py-1 text-[11px] font-semibold text-pink hover:bg-pink-soft/25 transition shrink-0"
-                      >
-                        <Plus size={12} /> Tambah Keahlian
-                      </button>
+                      <ModalAddButton onClick={startCreate}>Tambah Keahlian</ModalAddButton>
                     )}
                   </div>
 
@@ -339,17 +333,12 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                             <div className="shrink-0 flex flex-col items-end gap-1">
                               <span className="text-sm font-bold text-pink">{skill.level}%</span>
                               {isAuthenticated && (
-                                <button
-                                  type="button"
+                                <ModalEditButton
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     selectItem(skill);
                                   }}
-                                  className="grid h-7 w-7 place-items-center rounded-lg border border-pink/40 bg-pink/5 text-pink hover:bg-pink hover:text-white transition"
-                                  aria-label="Edit"
-                                >
-                                  <Pencil size={12} />
-                                </button>
+                                />
                               )}
                             </div>
                           </div>
@@ -458,20 +447,9 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                           </label>
                           <div className="flex flex-wrap gap-2 mb-2">
                             {form.tools.map((tool) => (
-                              <span
-                                key={tool}
-                                className="inline-flex items-center gap-1 rounded-full border border-pink/30 bg-pink-soft/50 dark:bg-pink/10 text-pink px-3 py-1 text-xs font-medium"
-                              >
+                              <ModalTag key={tool} onRemove={() => removeTool(tool)}>
                                 {tool}
-                                <button
-                                  type="button"
-                                  onClick={() => removeTool(tool)}
-                                  className="hover:text-pink-deep"
-                                  aria-label={`Hapus ${tool}`}
-                                >
-                                  <X size={12} />
-                                </button>
-                              </span>
+                              </ModalTag>
                             ))}
                           </div>
                           <div className="flex gap-2">
@@ -488,13 +466,9 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                               placeholder="Nama tool..."
                               className="modal-input flex-1 rounded-xl border border-pink-soft/70 bg-white dark:bg-[#352630] py-2 px-3 text-sm text-ink outline-none focus:border-pink"
                             />
-                            <button
-                              type="button"
-                              onClick={addTool}
-                              className="inline-flex items-center gap-1 rounded-xl border border-pink px-3 py-2 text-xs font-semibold text-pink hover:bg-pink-soft/25 transition"
-                            >
-                              <Plus size={12} /> Tambah
-                            </button>
+                            <ModalAddButton onClick={addTool} className="!rounded-xl !px-3 !py-2 !text-xs">
+                              Tambah
+                            </ModalAddButton>
                           </div>
                         </div>
 
@@ -592,10 +566,7 @@ function PreviewPanel({ form, onClose }) {
             <p className="text-xs font-semibold text-muted mb-2">Tools / Teknologi</p>
             <div className="flex flex-wrap gap-2">
               {tools.map((t) => (
-                <span
-                  key={t}
-                  className="rounded-full border border-pink/30 bg-pink-soft/50 text-pink px-3 py-1 text-xs font-medium"
-                >
+                <span key={t} className="modal-tag">
                   {t}
                 </span>
               ))}

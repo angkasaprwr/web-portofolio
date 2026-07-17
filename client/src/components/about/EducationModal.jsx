@@ -4,8 +4,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import {
   GraduationCap,
-  Pencil,
-  Plus,
   Eye,
   Calendar,
   BookOpen,
@@ -24,6 +22,8 @@ import {
   ModalHeader,
   SectionTitle,
   PreviewButton,
+  ModalAddButton,
+  ModalEditButton,
   FormField,
   FormSelect,
   ModalActions,
@@ -208,9 +208,14 @@ export default function EducationModal({ open, onClose }) {
               <div className="grid lg:grid-cols-[minmax(280px,320px)_1fr] divide-y lg:divide-y-0 lg:divide-x divide-pink-soft/40">
                 {/* Left — timeline list */}
                 <div className="p-5 sm:p-6 flex flex-col min-h-[420px]">
-                  <SectionTitle>
-                    Daftar Pendidikan <Sparkle size={10} />
-                  </SectionTitle>
+                  <div className="flex items-center justify-between gap-2 mb-4">
+                    <SectionTitle>
+                      Daftar Pendidikan <Sparkle size={10} />
+                    </SectionTitle>
+                    {isAuthenticated && (
+                      <ModalAddButton onClick={startCreate}>Tambah Pendidikan</ModalAddButton>
+                    )}
+                  </div>
 
                   <div className="flex-1 mt-4 overflow-y-auto max-h-[52vh] lg:max-h-none pr-1">
                     {isLoading ? (
@@ -236,18 +241,30 @@ export default function EducationModal({ open, onClose }) {
                                   className={`absolute left-0 top-5 z-10 h-3.5 w-3.5 rounded-full border-2 border-white dark:border-[#2a1e26] ${active ? 'bg-pink ring-4 ring-pink/20' : 'bg-pink'}`}
                                   aria-hidden="true"
                                 />
-                                <button
-                                  type="button"
+                                <div
+                                  role="button"
+                                  tabIndex={0}
                                   onClick={() => selectItem(edu)}
-                                  className={`relative w-full text-left rounded-2xl border p-4 transition-all ${
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                      e.preventDefault();
+                                      selectItem(edu);
+                                    }
+                                  }}
+                                  className={`relative w-full text-left rounded-2xl border p-4 transition-all cursor-pointer ${
                                     active
                                       ? 'border-pink bg-pink-soft/25 shadow-[0_0_0_1px_rgba(248,87,166,0.2)]'
                                       : 'border-pink-soft/60 hover:border-pink/40 bg-white dark:bg-[#352630]'
                                   }`}
                                 >
                                   {isAuthenticated && (
-                                    <span className="absolute top-3 right-3 grid h-7 w-7 place-items-center rounded-lg border border-pink/40 bg-pink/5 text-pink">
-                                      <Pencil size={12} />
+                                    <span className="absolute top-3 right-3">
+                                      <ModalEditButton
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          selectItem(edu);
+                                        }}
+                                      />
                                     </span>
                                   )}
                                   <p className="text-xs font-semibold text-pink pr-8">{formatPeriod(edu)}</p>
@@ -260,7 +277,7 @@ export default function EducationModal({ open, onClose }) {
                                       {edu.level}
                                     </span>
                                   )}
-                                </button>
+                                </div>
                               </div>
                             );
                           })}
@@ -270,13 +287,9 @@ export default function EducationModal({ open, onClose }) {
                   </div>
 
                   {isAuthenticated && (
-                    <button
-                      type="button"
-                      onClick={startCreate}
-                      className="mt-4 w-full flex items-center justify-center gap-2 rounded-2xl border-2 border-pink py-3 text-sm font-semibold text-pink hover:bg-pink-soft/25 transition"
-                    >
-                      <Plus size={16} /> Tambah Pendidikan Baru
-                    </button>
+                    <ModalAddButton onClick={startCreate} className="mt-4 w-full justify-center !rounded-2xl !py-3 !text-sm">
+                      Tambah Pendidikan Baru
+                    </ModalAddButton>
                   )}
                 </div>
 
