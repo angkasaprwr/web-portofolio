@@ -60,6 +60,12 @@ class ExperienceRepository extends BaseRepository {
   }
 }
 
+class EducationRepository extends BaseRepository {
+  constructor() {
+    super('education');
+  }
+}
+
 class CertificateRepository extends BaseRepository {
   constructor() {
     super('certificate');
@@ -129,6 +135,7 @@ module.exports = {
   SkillRepository,
   ProjectRepository,
   ExperienceRepository,
+  EducationRepository,
   CertificateRepository,
   SocialLinkRepository,
   CvFileRepository,

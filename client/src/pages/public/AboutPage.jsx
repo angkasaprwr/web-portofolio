@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -17,14 +18,18 @@ import {
   Plane,
   Code,
   BookOpen,
+  Pencil,
 } from 'lucide-react';
 import SEO from '../../components/common/SEO';
 import { FadeUp, ScaleIn } from '../../components/common/Motion';
 import { PortraitPlaceholder, Sparkle, Blob } from '../../components/common/Decorations';
 import { PageSkeleton } from '../../components/common/Skeleton';
 import { useAbout, useSkills, useCv } from '../../hooks/usePortfolio';
+import { useEducations } from '../../hooks/useEducation';
 import { assetUrl } from '../../lib/api';
 import { cvApi } from '../../services/apiServices';
+import { useAuth } from '../../context/AuthContext';
+import EducationModal from '../../components/about/EducationModal';
 import toast from 'react-hot-toast';
 
 const hobbyIcons = {
@@ -41,6 +46,9 @@ export default function AboutPage() {
   const { data: skillsRes } = useSkills({ category: 'Proficiency' });
   const { data: allSkills } = useSkills({});
   const { data: cv } = useCv();
+  const { data: educations = [] } = useEducations();
+  const { isAuthenticated } = useAuth();
+  const [eduModalOpen, setEduModalOpen] = useState(false);
 
   if (isLoading || !about) return <PageSkeleton />;
 
@@ -200,19 +208,51 @@ export default function AboutPage() {
 
           <FadeUp delay={0.1}>
             <div className="card-premium !hover:translate-y-0 p-6 h-full flex flex-col">
-              <h3 className="font-display text-xl mb-5">Pendidikan</h3>
-              <div className="relative flex-1 space-y-6 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-px before:bg-pink-soft">
-                {timeline.map((item, i) => (
-                  <div key={i} className="pl-8 relative">
-                    <span className="absolute left-0 top-1 h-4 w-4 rounded-full bg-pink border-4 border-pink-soft" />
-                    <p className="text-xs text-pink font-semibold">{item.period}</p>
-                    <p className="font-semibold text-sm mt-0.5">{item.institution}</p>
-                    <p className="text-sm text-muted">{item.degree}</p>
-                    {item.detail && <p className="text-xs text-muted mt-1">{item.detail}</p>}
-                  </div>
-                ))}
+              <div className="flex items-center justify-between mb-5">
+                <h3 className="font-display text-xl">Pendidikan</h3>
+                {isAuthenticated && (
+                  <button
+                    type="button"
+                    onClick={() => setEduModalOpen(true)}
+                    className="grid h-7 w-7 place-items-center rounded-lg bg-pink/10 text-pink hover:bg-pink hover:text-white transition"
+                    aria-label="Edit pendidikan"
+                  >
+                    <Pencil size={12} />
+                  </button>
+                )}
               </div>
-              <button type="button" className="btn-outline mt-6 w-full text-sm opacity-70 cursor-default">
+              <div className="relative flex-1 space-y-6 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-px before:bg-pink-soft">
+                {(educations.length > 0 ? educations : timeline).map((item, i) => {
+                  const inst = item.institution;
+                  const period = item.period || `${item.startYear} – ${item.isCurrent ? 'Sekarang' : item.endYear || ''}`;
+                  const deg = item.degree;
+                  const detail = item.detail || item.description;
+                  const level = item.level;
+                  return (
+                    <div
+                      key={item.id || i}
+                      className="pl-8 relative cursor-pointer group"
+                      onClick={() => setEduModalOpen(true)}
+                    >
+                      <span className="absolute left-0 top-1 h-4 w-4 rounded-full bg-pink border-4 border-pink-soft" />
+                      <p className="text-xs text-pink font-semibold">{period}</p>
+                      <p className="font-semibold text-sm mt-0.5 group-hover:text-pink transition">{inst}</p>
+                      <p className="text-sm text-muted">{deg}</p>
+                      {detail && <p className="text-xs text-muted mt-1 line-clamp-2">{detail}</p>}
+                      {level && (
+                        <span className="inline-block mt-1.5 text-[10px] font-bold text-pink bg-pink-soft/70 rounded-md px-2 py-0.5">
+                          {level}
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              <button
+                type="button"
+                onClick={() => setEduModalOpen(true)}
+                className="btn-outline mt-6 w-full text-sm"
+              >
                 Selengkapnya <ArrowRight size={14} />
               </button>
             </div>
@@ -255,6 +295,8 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      <EducationModal open={eduModalOpen} onClose={() => setEduModalOpen(false)} />
     </>
   );
 }

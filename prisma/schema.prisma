@@ -150,6 +150,27 @@ model ExperienceImage {
   @@map("experience_images")
 }
 
+model Education {
+  id          String    @id @default(cuid())
+  institution String
+  degree      String
+  field       String?
+  level       String?
+  gpa         String?
+  description String?   @db.Text
+  startYear   String    @map("start_year")
+  endYear     String?   @map("end_year")
+  isCurrent   Boolean   @default(false) @map("is_current")
+  status      String    @default("active")
+  order       Int       @default(0)
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@index([order])
+  @@map("educations")
+}
+
 model Certificate {
   id          String    @id @default(cuid())
   title       String

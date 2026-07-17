@@ -3,6 +3,7 @@ const {
   SkillRepository,
   ProjectRepository,
   ExperienceRepository,
+  EducationRepository,
   CertificateRepository,
   SocialLinkRepository,
   CvFileRepository,
@@ -17,6 +18,7 @@ const aboutRepo = new AboutRepository();
 const skillRepo = new SkillRepository();
 const projectRepo = new ProjectRepository();
 const experienceRepo = new ExperienceRepository();
+const educationRepo = new EducationRepository();
 const certificateRepo = new CertificateRepository();
 const socialRepo = new SocialLinkRepository();
 const cvRepo = new CvFileRepository();
@@ -283,6 +285,34 @@ const experienceService = {
   },
 };
 
+/* ───────────── Education ───────────── */
+const educationService = {
+  async list({ all } = {}) {
+    const where = all === 'true' || all === true ? {} : { isActive: true };
+    return educationRepo.findMany({ where, orderBy: { order: 'asc' } });
+  },
+  async getById(id) {
+    const item = await educationRepo.findUnique({ where: { id } });
+    if (!item) throw new ApiError(404, 'Pendidikan tidak ditemukan');
+    return item;
+  },
+  async create(req, data) {
+    const result = await educationRepo.create(data);
+    await logActivity(req, 'CREATE', 'education', result.id, { institution: result.institution });
+    return result;
+  },
+  async update(req, id, data) {
+    const result = await educationRepo.update(id, data);
+    await logActivity(req, 'UPDATE', 'education', id);
+    return result;
+  },
+  async remove(req, id) {
+    await educationRepo.delete(id);
+    await logActivity(req, 'DELETE', 'education', id);
+    return true;
+  },
+};
+
 /* ───────────── Certificates ───────────── */
 const certificateService = {
   async list({ page, limit, search, all }) {
@@ -486,6 +516,7 @@ module.exports = {
   skillService,
   projectService,
   experienceService,
+  educationService,
   certificateService,
   socialService,
   cvService,

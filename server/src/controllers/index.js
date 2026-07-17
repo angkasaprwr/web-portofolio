@@ -4,6 +4,7 @@ const {
   skillService,
   projectService,
   experienceService,
+  educationService,
   certificateService,
   socialService,
   cvService,
@@ -236,6 +237,42 @@ const experienceController = {
   }),
 };
 
+/* Education */
+const educationController = {
+  list: asyncHandler(async (req, res) => {
+    const data = await educationService.list(req.query);
+    return successResponse(res, { data });
+  }),
+  get: asyncHandler(async (req, res) => {
+    const data = await educationService.getById(req.params.id);
+    return successResponse(res, { data });
+  }),
+  create: asyncHandler(async (req, res) => {
+    const body = { ...req.body };
+    if (body.isCurrent === 'true') body.isCurrent = true;
+    if (body.isCurrent === 'false') body.isCurrent = false;
+    if (body.order !== undefined) body.order = Number(body.order) || 0;
+    if (body.isActive === 'true') body.isActive = true;
+    if (body.isActive === 'false') body.isActive = false;
+    const data = await educationService.create(req, body);
+    return successResponse(res, { statusCode: 201, message: 'Pendidikan ditambahkan', data });
+  }),
+  update: asyncHandler(async (req, res) => {
+    const body = { ...req.body };
+    if (body.isCurrent === 'true') body.isCurrent = true;
+    if (body.isCurrent === 'false') body.isCurrent = false;
+    if (body.order !== undefined) body.order = Number(body.order) || 0;
+    if (body.isActive === 'true') body.isActive = true;
+    if (body.isActive === 'false') body.isActive = false;
+    const data = await educationService.update(req, req.params.id, body);
+    return successResponse(res, { message: 'Pendidikan diperbarui', data });
+  }),
+  remove: asyncHandler(async (req, res) => {
+    await educationService.remove(req, req.params.id);
+    return successResponse(res, { message: 'Pendidikan dihapus' });
+  }),
+};
+
 /* Certificates */
 const certificateController = {
   list: asyncHandler(async (req, res) => {
@@ -387,6 +424,7 @@ module.exports = {
   skillController,
   projectController,
   experienceController,
+  educationController,
   certificateController,
   socialController,
   cvController,

@@ -9,6 +9,7 @@ const {
   skillController,
   projectController,
   experienceController,
+  educationController,
   certificateController,
   socialController,
   cvController,
@@ -52,6 +53,8 @@ router.get('/projects/:id', projectController.get);
 router.get('/experiences', experienceController.list);
 router.get('/experiences/categories', experienceController.categories);
 router.get('/experiences/:id', experienceController.get);
+router.get('/educations', educationController.list);
+router.get('/educations/:id', educationController.get);
 router.get('/certificates', certificateController.list);
 router.get('/certificates/:id', certificateController.get);
 router.get('/social-links', socialController.list);
@@ -70,6 +73,10 @@ router.get('/dashboard', dashboardController.overview);
 
 router.put('/about', aboutValidator, validate, aboutController.upsert);
 router.patch('/about/:id', aboutValidator, validate, aboutController.update);
+
+router.post('/educations', educationController.create);
+router.put('/educations/:id', educationController.update);
+router.delete('/educations/:id', educationController.remove);
 
 router.post('/skills', skillValidator, validate, skillController.create);
 router.put('/skills/:id', skillValidator, validate, skillController.update);
