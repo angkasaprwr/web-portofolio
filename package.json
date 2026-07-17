@@ -1,0 +1,36 @@
+{
+  "name": "web-portofolio",
+  "version": "1.0.0",
+  "description": "Personal Portfolio Website — Sukma Ayu Dwi Wulandari",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "client": "npm run dev --prefix client",
+    "server": "npm run dev --prefix server",
+    "build": "npm run build --prefix client",
+    "start": "npm run start --prefix server",
+    "prisma:generate": "bash scripts/link-prisma.sh",
+    "prisma:migrate": "prisma migrate dev --schema=prisma/schema.prisma",
+    "prisma:deploy": "prisma migrate deploy --schema=prisma/schema.prisma",
+    "prisma:seed": "node prisma/seed.js",
+    "prisma:studio": "prisma studio --schema=prisma/schema.prisma",
+    "setup": "npm install && npm install --prefix client && npm install --prefix server && npm run prisma:generate && npm run prisma:migrate && npm run prisma:seed",
+    "postinstall": "prisma generate --schema=prisma/schema.prisma && bash scripts/link-prisma.sh"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma",
+    "seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/client": "5.22.0",
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "prisma": "5.22.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
