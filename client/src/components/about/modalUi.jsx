@@ -235,18 +235,24 @@ export function FormTextarea({ label, icon: Icon, value, onChange, placeholder, 
   );
 }
 
-export function FormSelect({ label, icon: Icon, value, onChange, options }) {
+export function FormSelect({ label, icon: Icon, value, onChange, options, disabled }) {
   return (
     <div>
-      {label && <label className="text-xs font-semibold text-muted mb-1.5 block">{label}</label>}
+      {label && (
+        <label className="text-xs font-semibold text-[#7C7C7C] dark:text-[#c4b8be] mb-1.5 block">{label}</label>
+      )}
       <div className="relative">
         {Icon && (
-          <Icon size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-pink/70 pointer-events-none z-10" />
+          <Icon
+            size={16}
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-[#FF4F93]/70 pointer-events-none z-10"
+          />
         )}
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`modal-input w-full rounded-xl border border-pink-soft/70 bg-white dark:bg-[#352630] py-2.5 text-sm text-ink ${Icon ? 'pl-9' : 'pl-3'} pr-8 outline-none focus:border-pink appearance-none`}
+          disabled={disabled}
+          className={`modal-input w-full rounded-2xl border border-[#ECECEC] dark:border-[#5a4f56] bg-white dark:bg-[#352630] h-14 text-base text-ink ${Icon ? 'pl-11' : 'pl-4'} pr-8 outline-none focus:border-[#FF4F93] focus:shadow-[0_0_0_3px_rgba(255,79,147,0.15)] appearance-none disabled:opacity-60`}
         >
           {options.map((o) => (
             <option key={o.value ?? o} value={o.value ?? o}>
@@ -255,7 +261,7 @@ export function FormSelect({ label, icon: Icon, value, onChange, options }) {
           ))}
         </select>
         <svg
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
+          className="absolute right-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
           width="14"
           height="14"
           viewBox="0 0 24 24"
@@ -274,11 +280,10 @@ export function FormSelect({ label, icon: Icon, value, onChange, options }) {
 export function ModalActions({ onCancel, onDelete, saving, showDelete, variant = 'default' }) {
   const saveClass = variant === 'jobdesk' ? 'modal-btn-save-lg' : 'modal-btn-save';
   return (
-    <div className="modal-actions flex flex-wrap items-center gap-3 pt-5 border-t border-[#F3D4E5]/60 dark:border-pink-soft/30">
+    <div className="modal-actions flex flex-wrap items-center justify-end gap-3 w-full">
       <button type="button" onClick={onCancel} className="modal-btn-cancel">
         Batal
       </button>
-      <div className="flex-1" />
       {showDelete && (
         <button type="button" onClick={onDelete} className="modal-btn-delete">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

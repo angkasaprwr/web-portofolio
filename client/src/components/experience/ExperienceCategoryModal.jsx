@@ -130,7 +130,7 @@ export default function ExperienceCategoryModal({ open, onClose, category = 'Job
       setSelected(pick);
       reset(expToForm(pick));
       setExistingDoc(pick.documentUrl || '');
-      setMode(isAuthenticated ? 'edit' : 'view');
+      setMode('edit');
     } else {
       setSelected(null);
       reset(emptyForm);
@@ -143,12 +143,16 @@ export default function ExperienceCategoryModal({ open, onClose, category = 'Job
     reset(expToForm(exp));
     setExistingDoc(exp.documentUrl || '');
     setDocumentFile(null);
-    setMode(isAuthenticated ? 'edit' : 'view');
+    setMode('edit');
     setPreview(false);
     setSkillInput('');
   };
 
   const startCreate = () => {
+    if (!isAuthenticated) {
+      toast.error('Silakan login admin untuk mengubah data');
+      return;
+    }
     setSelected(null);
     reset({ ...emptyForm, order: items.length + 1 });
     setExistingDoc('');
@@ -282,7 +286,17 @@ export default function ExperienceCategoryModal({ open, onClose, category = 'Job
                     <SectionTitle size="large">
                       {cfg.listTitle} <Sparkle size={12} className="text-gold" />
                     </SectionTitle>
-                    {isAuthenticated && <ModalAddButton onClick={startCreate}>{cfg.addLabel}</ModalAddButton>}
+                    <ModalAddButton
+                      onClick={() => {
+                        if (!isAuthenticated) {
+                          toast.error('Silakan login admin untuk mengubah data');
+                          return;
+                        }
+                        startCreate();
+                      }}
+                    >
+                      {cfg.addLabel}
+                    </ModalAddButton>
                   </div>
 
                   <div className="flex-1 overflow-y-auto space-y-6 pr-1">
@@ -328,16 +342,14 @@ export default function ExperienceCategoryModal({ open, onClose, category = 'Job
                               </span>
                             </div>
 
-                            {isAuthenticated && (
-                              <motion.span className="absolute top-4 right-4" whileHover={{ scale: 1.05 }}>
-                                <ModalEditButton
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    selectItem(exp);
-                                  }}
-                                />
-                              </motion.span>
-                            )}
+                            <motion.span className="absolute top-4 right-4" whileHover={{ scale: 1.05 }}>
+                              <ModalEditButton
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  selectItem(exp);
+                                }}
+                              />
+                            </motion.span>
 
                             <p className="text-sm font-bold text-[#FF4F93] pr-10">
                               {formatPeriod(exp.startDate, exp.endDate, exp.isCurrent)}
@@ -364,28 +376,41 @@ export default function ExperienceCategoryModal({ open, onClose, category = 'Job
                   </div>
                 </div>
 
-                <div className="p-9 overflow-y-auto min-h-0 bg-white dark:bg-[#2a1e26]">
+                <div className="flex flex-col min-h-0 bg-white dark:bg-[#2a1e26]">
                   {!selected && mode !== 'create' ? (
-                    <div className="h-full min-h-[300px] flex items-center justify-center text-[#7C7C7C] dark:text-[#c4b8be] text-sm">
+                    <div className="h-full min-h-[300px] flex items-center justify-center text-[#7C7C7C] dark:text-[#c4b8be] text-sm p-9">
                       {cfg.selectText}
                     </div>
                   ) : preview ? (
-                    <PreviewPanel
-                      cfg={cfg}
-                      form={formValues}
-                      documentName={displayDoc}
-                      onClose={() => setPreview(false)}
-                    />
-                  ) : isAuthenticated ? (
-                    <div>
-                      <div className="flex items-center justify-between mb-6">
+                    <div className="p-9 overflow-y-auto">
+                      <PreviewPanel
+                        cfg={cfg}
+                        form={formValues}
+                        documentName={displayDoc}
+                        onClose={() => setPreview(false)}
+                      />
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex items-center justify-between px-9 pt-8 pb-2 shrink-0">
                         <SectionTitle size="large">
                           {cfg.editTitle} <Sparkle size={12} className="text-gold" />
                         </SectionTitle>
                         <PreviewButton onClick={() => setPreview(true)} />
                       </div>
 
-                      <form onSubmit={handleSubmit(onSave)} className="space-y-5">
+                      <form
+                        onSubmit={(e) => {
+                          if (!isAuthenticated) {
+                            e.preventDefault();
+                            toast.error('Silakan login admin untuk mengubah data');
+                            return;
+                          }
+                          handleSubmit(onSave)(e);
+                        }}
+                        className="flex-1 flex flex-col min-h-0"
+                      >
+                        <div className="flex-1 overflow-y-auto px-9 pb-4 space-y-5">
                         <div className="grid sm:grid-cols-2 gap-5">
                           <FormField
                             label="Posisi / Jabatan"
@@ -570,25 +595,28 @@ export default function ExperienceCategoryModal({ open, onClose, category = 'Job
                             className="sm:max-w-[200px]"
                           />
                         </div>
+                        </div>
 
-                        <ModalActions
-                          variant="jobdesk"
-                          onCancel={() => {
-                            if (selected) reset(expToForm(selected));
-                            else onClose();
-                          }}
-                          onDelete={handleDelete}
-                          saving={saving}
-                          showDelete={mode === 'edit' && !!selected?.id}
-                        />
+                        <div className="shrink-0 px-9 pb-7 pt-3 bg-white dark:bg-[#2a1e26] border-t border-[#F3D4E5]/60 dark:border-pink-soft/30">
+                          <ModalActions
+                            variant="jobdesk"
+                            onCancel={() => {
+                              if (selected) reset(expToForm(selected));
+                              else onClose();
+                            }}
+                            onDelete={() => {
+                              if (!isAuthenticated) {
+                                toast.error('Silakan login admin untuk mengubah data');
+                                return;
+                              }
+                              handleDelete();
+                            }}
+                            saving={saving}
+                            showDelete={mode === 'edit' && !!selected?.id}
+                          />
+                        </div>
                       </form>
-                    </div>
-                  ) : (
-                    <PreviewPanel
-                      cfg={cfg}
-                      form={expToForm(selected)}
-                      documentName={fileNameFromUrl(selected?.documentUrl)}
-                    />
+                    </>
                   )}
                 </div>
               </div>

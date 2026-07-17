@@ -124,19 +124,23 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
       const pick = selected ? skills.find((s) => s.id === selected.id) || skills[0] : skills[0];
       setSelected(pick);
       setForm(skillToForm(pick));
-      setMode(isAuthenticated ? 'edit' : 'view');
+      setMode('edit');
     }
   }, [open, skills, isAuthenticated]);
 
   const selectItem = (skill) => {
     setSelected(skill);
     setForm(skillToForm(skill));
-    setMode(isAuthenticated ? 'edit' : 'view');
+    setMode('edit');
     setPreview(false);
     setToolInput('');
   };
 
   const startCreate = () => {
+    if (!isAuthenticated) {
+      toast.error('Silakan login admin untuk mengubah data');
+      return;
+    }
     setSelected(null);
     setForm({ ...emptyForm, category, order: items.length + 1 });
     setMode('create');
@@ -284,9 +288,7 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                     <SectionTitle size="large">
                       Daftar Keahlian <Sparkle size={12} className="text-gold" />
                     </SectionTitle>
-                    {isAuthenticated && (
-                      <ModalAddButton onClick={startCreate}>Tambah Keahlian</ModalAddButton>
-                    )}
+                    <ModalAddButton onClick={startCreate}>Tambah Keahlian</ModalAddButton>
                   </div>
 
                   <div className="flex-1 overflow-y-auto space-y-[18px] pr-1">
@@ -338,14 +340,12 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                             </div>
                             <div className="shrink-0 flex flex-col items-end gap-1">
                               <span className="text-sm font-bold text-[#FF4F93]">{skill.level}%</span>
-                              {isAuthenticated && (
-                                <ModalEditButton
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    selectItem(skill);
-                                  }}
-                                />
-                              )}
+                              <ModalEditButton
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  selectItem(skill);
+                                }}
+                              />
                             </div>
                           </motion.div>
                         );
@@ -353,32 +353,43 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                     )}
                   </div>
 
-                  {isAuthenticated && (
-                    <p className="mt-6 flex items-center gap-1.5 text-xs text-[#FF4F93] font-medium shrink-0">
+                  <p className="mt-6 flex items-center gap-1.5 text-xs text-[#FF4F93] font-medium shrink-0">
                       <Info size={12} className="shrink-0" />
                       Drag & drop untuk mengubah urutan keahlian.
                     </p>
-                  )}
                 </div>
 
                 {/* Right — form */}
-                <div className="p-9 overflow-y-auto min-h-0 bg-white dark:bg-[#2a1e26]">
+                <div className="flex flex-col min-h-0 bg-white dark:bg-[#2a1e26]">
                   {!selected && mode !== 'create' ? (
-                    <div className="h-full min-h-[300px] flex items-center justify-center text-[#7C7C7C] dark:text-[#c4b8be] text-sm">
+                    <div className="h-full min-h-[300px] flex items-center justify-center text-[#7C7C7C] dark:text-[#c4b8be] text-sm p-9">
                       Pilih keahlian dari daftar di sebelah kiri.
                     </div>
                   ) : preview ? (
-                    <PreviewPanel form={form} onClose={() => setPreview(false)} />
-                  ) : isAuthenticated ? (
-                    <div>
-                      <div className="flex items-center justify-between mb-6">
+                    <div className="p-9 overflow-y-auto">
+                      <PreviewPanel form={form} onClose={() => setPreview(false)} />
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex items-center justify-between px-9 pt-8 pb-2 shrink-0">
                         <SectionTitle size="large">
                           Edit Keahlian <Sparkle size={12} className="text-gold" />
                         </SectionTitle>
                         <PreviewButton onClick={() => setPreview(true)} />
                       </div>
 
-                      <form onSubmit={handleSave} className="space-y-5">
+                      <form
+                        onSubmit={(e) => {
+                          if (!isAuthenticated) {
+                            e.preventDefault();
+                            toast.error('Silakan login admin untuk mengubah data');
+                            return;
+                          }
+                          handleSave(e);
+                        }}
+                        className="flex-1 flex flex-col min-h-0"
+                      >
+                        <div className="flex-1 overflow-y-auto px-9 pb-4 space-y-5">
                         <FormField
                           label="Nama Keahlian"
                           icon={PenTool}
@@ -505,21 +516,28 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                             <div className="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow peer-checked:translate-x-5 transition-transform" />
                           </div>
                         </label>
+                        </div>
 
-                        <ModalActions
-                          variant="jobdesk"
-                          onCancel={() => {
-                            if (selected) setForm(skillToForm(selected));
-                            else onClose();
-                          }}
-                          onDelete={handleDelete}
-                          saving={saving}
-                          showDelete={mode === 'edit' && !!selected?.id}
-                        />
+                        <div className="shrink-0 px-9 pb-7 pt-3 bg-white dark:bg-[#2a1e26] border-t border-[#F3D4E5]/60 dark:border-pink-soft/30">
+                          <ModalActions
+                            variant="jobdesk"
+                            onCancel={() => {
+                              if (selected) setForm(skillToForm(selected));
+                              else onClose();
+                            }}
+                            onDelete={() => {
+                              if (!isAuthenticated) {
+                                toast.error('Silakan login admin untuk mengubah data');
+                                return;
+                              }
+                              handleDelete();
+                            }}
+                            saving={saving}
+                            showDelete={mode === 'edit' && !!selected?.id}
+                          />
+                        </div>
                       </form>
-                    </div>
-                  ) : (
-                    <PreviewPanel form={skillToForm(selected)} />
+                    </>
                   )}
                 </div>
               </div>
