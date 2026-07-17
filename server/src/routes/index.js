@@ -79,6 +79,7 @@ router.put('/educations/:id', educationController.update);
 router.delete('/educations/:id', educationController.remove);
 
 router.post('/skills', skillValidator, validate, skillController.create);
+router.put('/skills/reorder', skillController.reorder);
 router.put('/skills/:id', skillValidator, validate, skillController.update);
 router.delete('/skills/:id', skillController.remove);
 

@@ -103,9 +103,9 @@ async function main() {
     { name: 'Power BI', category: 'Tools', level: 75, icon: 'powerbi', order: 24 },
     { name: 'Python', category: 'Tools', level: 70, icon: 'python', order: 25 },
     { name: 'Tableau', category: 'Tools', level: 72, icon: 'tableau', order: 26 },
-    { name: 'UI/UX Design', category: 'Proficiency', level: 95, order: 27 },
-    { name: 'Frontend Development', category: 'Proficiency', level: 85, order: 28 },
-    { name: 'Problem Solving', category: 'Proficiency', level: 90, order: 29 },
+    { name: 'UI/UX Design', category: 'Proficiency', level: 95, order: 27, icon: 'palette', description: 'Merancang antarmuka dan pengalaman pengguna yang intuitif, estetis, dan berorientasi pada kebutuhan pengguna.', tools: ['Figma', 'Adobe XD', 'Prototyping'] },
+    { name: 'Frontend Development', category: 'Proficiency', level: 85, order: 28, icon: 'code', description: 'Membangun antarmuka web responsif dan interaktif dengan teknologi modern.', tools: ['React', 'JavaScript', 'Tailwind CSS', 'HTML/CSS'] },
+    { name: 'Problem Solving', category: 'Proficiency', level: 90, order: 29, icon: 'target', description: 'Menganalisis masalah secara sistematis dan menemukan solusi yang efektif dan efisien.', tools: ['Analisis Data', 'Critical Thinking', 'Research'] },
     { name: 'Prototyping', category: 'Tools', level: 90, icon: 'prototype', isFeatured: true, order: 30 },
   ];
   await prisma.skill.createMany({ data: skills });

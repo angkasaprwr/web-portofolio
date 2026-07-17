@@ -114,6 +114,18 @@ const skillService = {
     });
     return skills.map((s) => s.category);
   },
+  async reorder(req, orders) {
+    if (!Array.isArray(orders) || orders.length === 0) {
+      throw new ApiError(400, 'Data urutan tidak valid');
+    }
+    await prisma.$transaction(
+      orders.map(({ id, order }) =>
+        skillRepo.update(id, { order: Number(order) || 0 })
+      )
+    );
+    await logActivity(req, 'UPDATE', 'skill', 'reorder', { count: orders.length });
+    return true;
+  },
 };
 
 /* ───────────── Projects ───────────── */

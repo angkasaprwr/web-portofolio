@@ -30,6 +30,7 @@ import { assetUrl } from '../../lib/api';
 import { cvApi } from '../../services/apiServices';
 import { useAuth } from '../../context/AuthContext';
 import EducationModal from '../../components/about/EducationModal';
+import SkillModal from '../../components/about/SkillModal';
 import toast from 'react-hot-toast';
 
 const hobbyIcons = {
@@ -49,6 +50,7 @@ export default function AboutPage() {
   const { data: educations = [] } = useEducations();
   const { isAuthenticated } = useAuth();
   const [eduModalOpen, setEduModalOpen] = useState(false);
+  const [skillModalOpen, setSkillModalOpen] = useState(false);
 
   if (isLoading || !about) return <PageSkeleton />;
 
@@ -183,12 +185,27 @@ export default function AboutPage() {
         <div className="container-site grid gap-6 lg:grid-cols-3">
           <FadeUp>
             <div className="card-premium !hover:translate-y-0 p-6 h-full flex flex-col">
-              <h3 className="font-display text-xl mb-5">Keahlian Utama</h3>
-              <div className="space-y-4 flex-1">
+              <div className="flex items-center justify-between mb-5">
+                <h3 className="font-display text-xl">Keahlian Utama</h3>
+                {isAuthenticated && (
+                  <button
+                    type="button"
+                    onClick={() => setSkillModalOpen(true)}
+                    className="grid h-7 w-7 place-items-center rounded-lg bg-pink/10 text-pink hover:bg-pink hover:text-white transition"
+                    aria-label="Edit keahlian"
+                  >
+                    <Pencil size={12} />
+                  </button>
+                )}
+              </div>
+              <div
+                className="space-y-4 flex-1 cursor-pointer group"
+                onClick={() => setSkillModalOpen(true)}
+              >
                 {progressSkills.map((skill) => (
                   <div key={skill.id}>
                     <div className="flex justify-between text-sm mb-1">
-                      <span className="font-medium">{skill.name}</span>
+                      <span className="font-medium group-hover:text-pink transition">{skill.name}</span>
                       <span className="text-pink font-semibold">{skill.level}%</span>
                     </div>
                     <div className="h-2 rounded-full bg-pink-soft overflow-hidden">
@@ -200,9 +217,13 @@ export default function AboutPage() {
                   </div>
                 ))}
               </div>
-              <Link to="/keahlian" className="btn-outline mt-6 w-full text-sm">
-                Lihat Semua Keahlian <ArrowRight size={14} />
-              </Link>
+              <button
+                type="button"
+                onClick={() => setSkillModalOpen(true)}
+                className="btn-outline mt-6 w-full text-sm"
+              >
+                Selengkapnya <ArrowRight size={14} />
+              </button>
             </div>
           </FadeUp>
 
@@ -297,6 +318,7 @@ export default function AboutPage() {
       </section>
 
       <EducationModal open={eduModalOpen} onClose={() => setEduModalOpen(false)} />
+      <SkillModal open={skillModalOpen} onClose={() => setSkillModalOpen(false)} category="Proficiency" />
     </>
   );
 }

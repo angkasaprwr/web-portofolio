@@ -55,6 +55,7 @@ model Skill {
   level       Int      @default(80)
   icon        String?
   description String?  @db.Text
+  tools       Json?
   color       String?
   order       Int      @default(0)
   isFeatured  Boolean  @default(false) @map("is_featured")

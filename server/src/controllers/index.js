@@ -146,6 +146,10 @@ const skillController = {
     const data = await skillService.categories();
     return successResponse(res, { data });
   }),
+  reorder: asyncHandler(async (req, res) => {
+    await skillService.reorder(req, req.body.orders);
+    return successResponse(res, { message: 'Urutan skill diperbarui' });
+  }),
 };
 
 /* Projects */
