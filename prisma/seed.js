@@ -103,15 +103,9 @@ async function main() {
     { name: 'Power BI', category: 'Tools', level: 75, icon: 'powerbi', order: 24 },
     { name: 'Python', category: 'Tools', level: 70, icon: 'python', order: 25 },
     { name: 'Tableau', category: 'Tools', level: 72, icon: 'tableau', order: 26 },
- cursor/portfolio-website-980a
     { name: 'UI/UX Design', category: 'Proficiency', level: 95, order: 27, icon: 'palette', description: 'Merancang antarmuka dan pengalaman pengguna yang intuitif, estetis, dan berorientasi pada kebutuhan pengguna.', tools: ['Figma', 'Adobe XD', 'Prototyping'] },
     { name: 'Frontend Development', category: 'Proficiency', level: 85, order: 28, icon: 'code', description: 'Membangun antarmuka web responsif dan interaktif dengan teknologi modern.', tools: ['React', 'JavaScript', 'Tailwind CSS', 'HTML/CSS'] },
     { name: 'Problem Solving', category: 'Proficiency', level: 90, order: 29, icon: 'target', description: 'Menganalisis masalah secara sistematis dan menemukan solusi yang efektif dan efisien.', tools: ['Analisis Data', 'Critical Thinking', 'Research'] },
-
-    { name: 'UI/UX Design', category: 'Proficiency', level: 95, order: 27 },
-    { name: 'Frontend Development', category: 'Proficiency', level: 85, order: 28 },
-    { name: 'Problem Solving', category: 'Proficiency', level: 90, order: 29 },
- main
     { name: 'Prototyping', category: 'Tools', level: 90, icon: 'prototype', isFeatured: true, order: 30 },
   ];
   await prisma.skill.createMany({ data: skills });
@@ -414,11 +408,9 @@ async function main() {
       {
         platform: 'whatsapp',
         label: 'WhatsApp',
- cursor/portfolio-website-980a
         url: 'https://wa.me/6289683825678',
 
         url: 'https://wa.me/6280000000000',
- main
         icon: 'whatsapp',
         order: 1,
       },
@@ -439,11 +431,7 @@ async function main() {
       {
         platform: 'linkedin',
         label: 'LinkedIn',
- cursor/portfolio-website-980a
         url: 'https://www.linkedin.com/in/sukmaayu-dwiwulandari/',
-
-        url: 'https://linkedin.com/in/sukmaayu',
- main
         icon: 'linkedin',
         order: 4,
       },

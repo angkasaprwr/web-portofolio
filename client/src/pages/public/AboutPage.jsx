@@ -1,7 +1,4 @@
- ###cursor/portfolio-website-980a
 import { useState } from 'react';
-
-##main
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -21,27 +18,20 @@ import {
   Plane,
   Code,
   BookOpen,
- ###cursor/portfolio-website-980a
   Pencil,
 
-###3main
 } from 'lucide-react';
 import SEO from '../../components/common/SEO';
 import { FadeUp, ScaleIn } from '../../components/common/Motion';
 import { PortraitPlaceholder, Sparkle, Blob } from '../../components/common/Decorations';
 import { PageSkeleton } from '../../components/common/Skeleton';
 import { useAbout, useSkills, useCv } from '../../hooks/usePortfolio';
- cursor/portfolio-website-980a
 import { useEducations } from '../../hooks/useEducation';
 import { assetUrl } from '../../lib/api';
 import { cvApi } from '../../services/apiServices';
 import { useAuth } from '../../context/AuthContext';
 import EducationModal from '../../components/about/EducationModal';
 import SkillModal from '../../components/about/SkillModal';
-=======
-import { assetUrl } from '../../lib/api';
-import { cvApi } from '../../services/apiServices';
- main
 import toast from 'react-hot-toast';
 
 const hobbyIcons = {
@@ -58,13 +48,11 @@ export default function AboutPage() {
   const { data: skillsRes } = useSkills({ category: 'Proficiency' });
   const { data: allSkills } = useSkills({});
   const { data: cv } = useCv();
- cursor/portfolio-website-980a
   const { data: educations = [] } = useEducations();
   const { isAuthenticated } = useAuth();
   const [eduModalOpen, setEduModalOpen] = useState(false);
   const [skillModalOpen, setSkillModalOpen] = useState(false);
 
- main
 
   if (isLoading || !about) return <PageSkeleton />;
 
@@ -199,7 +187,6 @@ export default function AboutPage() {
         <div className="container-site grid gap-6 lg:grid-cols-3">
           <FadeUp>
             <div className="card-premium !hover:translate-y-0 p-6 h-full flex flex-col">
- cursor/portfolio-website-980a
               <div className="flex items-center justify-between mb-5">
                 <h3 className="font-display text-xl">Keahlian Utama</h3>
                 {isAuthenticated && (
@@ -221,14 +208,6 @@ export default function AboutPage() {
                   <div key={skill.id}>
                     <div className="flex justify-between text-sm mb-1">
                       <span className="font-medium group-hover:text-pink transition">{skill.name}</span>
-
-              <h3 className="font-display text-xl mb-5">Keahlian Utama</h3>
-              <div className="space-y-4 flex-1">
-                {progressSkills.map((skill) => (
-                  <div key={skill.id}>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="font-medium">{skill.name}</span>
- main
                       <span className="text-pink font-semibold">{skill.level}%</span>
                     </div>
                     <div className="h-2 rounded-full bg-pink-soft overflow-hidden">
@@ -240,7 +219,6 @@ export default function AboutPage() {
                   </div>
                 ))}
               </div>
- cursor/portfolio-website-980a
               <button
                 type="button"
                 onClick={() => setSkillModalOpen(true)}
@@ -248,17 +226,11 @@ export default function AboutPage() {
               >
                 Selengkapnya <ArrowRight size={14} />
               </button>
-
-              <Link to="/keahlian" className="btn-outline mt-6 w-full text-sm">
-                Lihat Semua Keahlian <ArrowRight size={14} />
-              </Link>
- main
             </div>
           </FadeUp>
 
           <FadeUp delay={0.1}>
             <div className="card-premium !hover:translate-y-0 p-6 h-full flex flex-col">
- cursor/portfolio-website-980a
               <div className="flex items-center justify-between mb-5">
                 <h3 className="font-display text-xl">Pendidikan</h3>
                 {isAuthenticated && (
@@ -304,21 +276,6 @@ export default function AboutPage() {
                 onClick={() => setEduModalOpen(true)}
                 className="btn-outline mt-6 w-full text-sm"
               >
-
-              <h3 className="font-display text-xl mb-5">Pendidikan</h3>
-              <div className="relative flex-1 space-y-6 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-px before:bg-pink-soft">
-                {timeline.map((item, i) => (
-                  <div key={i} className="pl-8 relative">
-                    <span className="absolute left-0 top-1 h-4 w-4 rounded-full bg-pink border-4 border-pink-soft" />
-                    <p className="text-xs text-pink font-semibold">{item.period}</p>
-                    <p className="font-semibold text-sm mt-0.5">{item.institution}</p>
-                    <p className="text-sm text-muted">{item.degree}</p>
-                    {item.detail && <p className="text-xs text-muted mt-1">{item.detail}</p>}
-                  </div>
-                ))}
-              </div>
-              <button type="button" className="btn-outline mt-6 w-full text-sm opacity-70 cursor-default">
- main
                 Selengkapnya <ArrowRight size={14} />
               </button>
             </div>
@@ -361,12 +318,10 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
- cursor/portfolio-website-980a
 
       <EducationModal open={eduModalOpen} onClose={() => setEduModalOpen(false)} />
       <SkillModal open={skillModalOpen} onClose={() => setSkillModalOpen(false)} category="Proficiency" />
 
- main
     </>
   );
 }
