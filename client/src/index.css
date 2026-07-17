@@ -423,13 +423,47 @@ html.dark table thead {
   color: var(--color-ink);
 }
 
+html:not(.dark) .modal-panel {
+  background: #ffffff;
+  color: #2c2c2c;
+}
+
+html:not(.dark) .modal-panel .text-ink,
+html:not(.dark) .modal-panel h2,
+html:not(.dark) .modal-panel h3,
+html:not(.dark) .modal-panel label,
+html:not(.dark) .modal-panel p {
+  color: inherit;
+}
+
+html:not(.dark) .modal-panel .text-muted {
+  color: #5f5f5f !important;
+}
+
 html.dark .modal-panel {
   background: #2a1e26;
   color: #f7f2f5;
 }
 
+html.dark .modal-panel .text-ink,
+html.dark .modal-panel h2,
+html.dark .modal-panel h3,
+html.dark .modal-panel label,
+html.dark .modal-panel p,
+html.dark .modal-panel span {
+  color: inherit;
+}
+
 html.dark .modal-panel .text-muted {
   color: #d2c6cd !important;
+}
+
+html.dark .modal-panel .font-display {
+  color: #f7f2f5;
+}
+
+html.dark .modal-panel .text-pink {
+  color: #ff9fd0 !important;
 }
 
 html.dark .modal-input,
@@ -447,6 +481,24 @@ html:not(.dark) .modal-panel textarea,
 html:not(.dark) .modal-panel select {
   background-color: #ffffff;
   color: #2c2c2c;
+}
+
+html.dark .modal-panel input::placeholder,
+html.dark .modal-panel textarea::placeholder {
+  color: #b7a8b0 !important;
+}
+
+html:not(.dark) .modal-panel input::placeholder,
+html:not(.dark) .modal-panel textarea::placeholder {
+  color: #9a9a9a;
+}
+
+html.dark .modal-panel .bg-white {
+  background-color: #352630 !important;
+}
+
+html:not(.dark) .modal-panel .dark\:bg-\[\#352630\] {
+  background-color: #ffffff;
 }
 
 html.dark .text-gold,

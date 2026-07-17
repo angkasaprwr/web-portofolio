@@ -9,10 +9,14 @@ export function ModalOverlay({ children, onClose }) {
   );
 }
 
-export function ModalHeader({ icon: Icon, title, subtitle, onClose }) {
+export function ModalHeader({ icon: Icon, title, subtitle, onClose, iconShape = 'circle' }) {
+  const iconWrap =
+    iconShape === 'square'
+      ? 'rounded-2xl bg-gradient-to-br from-pink to-pink-deep'
+      : 'rounded-full bg-gradient-to-br from-pink to-pink-deep';
   return (
     <div className="flex items-center gap-4 px-6 sm:px-8 pt-6 pb-4 border-b border-pink-soft/50 dark:border-pink-soft/30">
-      <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-gradient-to-br from-pink to-pink-deep text-white shadow-glow">
+      <div className={`grid h-14 w-14 shrink-0 place-items-center ${iconWrap} text-white shadow-glow`}>
         <Icon size={26} />
       </div>
       <div className="flex-1 min-w-0">
@@ -135,7 +139,7 @@ export function ModalActions({ onCancel, onDelete, saving, showDelete }) {
         <button
           type="button"
           onClick={onDelete}
-          className="inline-flex items-center gap-1.5 rounded-xl border-2 border-pink/60 bg-white dark:bg-[#352630] px-4 py-2.5 text-sm font-semibold text-pink hover:bg-pink hover:text-white transition"
+          className="inline-flex items-center gap-1.5 rounded-xl border-2 border-red-400/70 bg-white dark:bg-[#352630] px-4 py-2.5 text-sm font-semibold text-red-500 hover:bg-red-500 hover:text-white hover:border-red-500 transition"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />

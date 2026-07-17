@@ -409,8 +409,6 @@ async function main() {
         platform: 'whatsapp',
         label: 'WhatsApp',
         url: 'https://wa.me/6289683825678',
-
-        url: 'https://wa.me/6280000000000',
         icon: 'whatsapp',
         order: 1,
       },

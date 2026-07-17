@@ -15,7 +15,8 @@ import {
   Wrench,
   Star,
   FileText,
-  Tag,
+  LayoutGrid,
+  ListOrdered,
   Info,
   Sparkles,
   X,
@@ -35,7 +36,17 @@ import {
   InfoRow,
 } from './modalUi';
 
-const CATEGORIES = ['UI Design', 'Website Development', 'Data Analysis', 'Tools', 'Proficiency'];
+const CATEGORIES = [
+  { value: 'UI Design', label: 'UI/UX Design' },
+  { value: 'Website Development', label: 'Frontend Development' },
+  { value: 'Data Analysis', label: 'Data Analysis' },
+  { value: 'Tools', label: 'Tools' },
+  { value: 'Proficiency', label: 'Proficiency' },
+];
+
+function categoryLabel(cat) {
+  return CATEGORIES.find((c) => c.value === cat)?.label || cat;
+}
 
 const emptyForm = {
   name: '',
@@ -110,9 +121,10 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
       return;
     }
     setItems(skills);
-    if (skills.length > 0 && !selected) {
-      setSelected(skills[0]);
-      setForm(skillToForm(skills[0]));
+    if (skills.length > 0) {
+      const pick = selected ? skills.find((s) => s.id === selected.id) || skills[0] : skills[0];
+      setSelected(pick);
+      setForm(skillToForm(pick));
       setMode(isAuthenticated ? 'edit' : 'view');
     }
   }, [open, skills, isAuthenticated]);
@@ -248,11 +260,12 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 16 }}
             transition={{ type: 'spring', stiffness: 320, damping: 28 }}
-            className="relative w-full max-w-[960px] max-h-[92vh] rounded-3xl bg-white dark:bg-[#2a1e26] shadow-2xl overflow-hidden flex flex-col modal-panel"
+            className="relative w-full max-w-[980px] max-h-[92vh] rounded-3xl bg-white dark:bg-[#2a1e26] shadow-2xl overflow-hidden flex flex-col modal-panel"
             onClick={(e) => e.stopPropagation()}
           >
             <ModalHeader
               icon={BarChart3}
+              iconShape="square"
               title={
                 <>
                   Detail Keahlian Utama <Sparkles size={16} className="text-pink" />
@@ -263,7 +276,7 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
             />
 
             <div className="flex-1 overflow-y-auto">
-              <div className="grid lg:grid-cols-[minmax(300px,360px)_1fr] divide-y lg:divide-y-0 lg:divide-x divide-pink-soft/40">
+              <div className="grid lg:grid-cols-[2fr_3fr] divide-y lg:divide-y-0 lg:divide-x divide-pink-soft/40">
                 {/* Left — skill list */}
                 <div className="p-5 sm:p-6 flex flex-col min-h-[420px]">
                   <div className="flex items-center justify-between gap-2 mb-4">
@@ -298,10 +311,10 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                             onDragEnter={() => handleDragEnter(index)}
                             onDragEnd={handleDragEnd}
                             onDragOver={(e) => e.preventDefault()}
-                            className={`relative flex items-center gap-2 rounded-2xl border p-3 transition-all cursor-pointer ${
+                            className={`relative flex items-center gap-2.5 rounded-2xl border p-3.5 transition-all cursor-pointer ${
                               isSelected
-                                ? 'border-pink bg-pink-soft/25 shadow-[0_0_0_1px_rgba(248,87,166,0.2)]'
-                                : 'border-pink-soft/60 hover:border-pink/40 bg-white dark:bg-[#352630]'
+                                ? 'border-pink bg-pink-soft/20 shadow-[0_0_0_1px_rgba(248,87,166,0.35)]'
+                                : 'border-pink-soft/50 hover:border-pink/35 bg-white dark:bg-[#352630]'
                             }`}
                             onClick={() => selectItem(skill)}
                           >
@@ -310,13 +323,13 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                                 <GripVertical size={16} />
                               </span>
                             )}
-                            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-pink/10 text-pink">
+                            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-pink-soft/60 dark:bg-pink/15 text-pink">
                               <Icon size={18} />
                             </span>
-                            <div className="min-w-0 flex-1">
-                              <p className="font-semibold text-sm text-ink truncate">{skill.name}</p>
-                              <p className="text-[11px] text-muted truncate">{skill.category}</p>
-                              <div className="mt-1.5 h-1.5 rounded-full bg-pink-soft overflow-hidden">
+                            <div className="min-w-0 flex-1 pr-1">
+                              <p className="font-semibold text-sm text-ink truncate leading-tight">{skill.name}</p>
+                              <p className="text-[11px] text-muted truncate mt-0.5">{categoryLabel(skill.category)}</p>
+                              <div className="mt-2 h-1.5 rounded-full bg-gray-200 dark:bg-[#4a3540] overflow-hidden">
                                 <div
                                   className="h-full rounded-full bg-gradient-to-r from-pink to-pink-deep"
                                   style={{ width: `${skill.level}%` }}
@@ -346,7 +359,7 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                   </div>
 
                   {isAuthenticated && (
-                    <p className="mt-3 flex items-center gap-1.5 text-[11px] text-pink/80">
+                    <p className="mt-4 flex items-center gap-1.5 text-[11px] text-pink font-medium">
                       <Info size={12} className="shrink-0" />
                       Drag & drop untuk mengubah urutan keahlian.
                     </p>
@@ -381,7 +394,7 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
 
                         <FormSelect
                           label="Kategori"
-                          icon={Tag}
+                          icon={LayoutGrid}
                           value={form.category}
                           onChange={(v) => setForm({ ...form, category: v })}
                           options={CATEGORIES}
@@ -391,13 +404,22 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                           <label className="text-xs font-semibold text-muted mb-1.5 block">
                             Persentase Kemampuan
                           </label>
-                          <div className="flex items-center gap-2 mb-2">
+                          <div className="relative mb-2">
+                            <Star size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-pink/70 pointer-events-none" />
                             <input
-                              type="text"
-                              readOnly
-                              value={`${form.level}%`}
-                              className="w-20 rounded-xl border border-pink-soft/70 bg-pink-light/50 dark:bg-[#352630] py-2.5 px-3 text-sm text-center font-bold text-pink outline-none"
+                              type="number"
+                              min={0}
+                              max={100}
+                              value={form.level}
+                              onChange={(e) =>
+                                setForm({
+                                  ...form,
+                                  level: Math.min(100, Math.max(0, Number(e.target.value) || 0)),
+                                })
+                              }
+                              className="modal-input w-full rounded-xl border border-pink-soft/70 bg-white dark:bg-[#352630] py-2.5 pl-9 pr-10 text-sm font-semibold text-ink outline-none focus:border-pink"
                             />
+                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-bold text-pink">%</span>
                           </div>
                           <input
                             type="range"
@@ -407,7 +429,7 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
                             onChange={(e) => setForm({ ...form, level: Number(e.target.value) })}
                             className="w-full accent-pink h-2 cursor-pointer"
                           />
-                          <div className="mt-2 h-2 rounded-full bg-pink-soft overflow-hidden">
+                          <div className="mt-2 h-2 rounded-full bg-gray-200 dark:bg-[#4a3540] overflow-hidden">
                             <motion.div
                               className="h-full rounded-full bg-gradient-to-r from-pink to-pink-deep"
                               animate={{ width: `${form.level}%` }}
@@ -478,7 +500,7 @@ export default function SkillModal({ open, onClose, category = 'Proficiency' }) 
 
                         <FormField
                           label="Urutan"
-                          icon={Star}
+                          icon={ListOrdered}
                           type="number"
                           value={form.order}
                           onChange={(v) => setForm({ ...form, order: v })}
@@ -549,7 +571,7 @@ function PreviewPanel({ form, onClose }) {
           </div>
           <div className="flex-1">
             <p className="font-display text-lg font-semibold text-ink">{data.name || '—'}</p>
-            <p className="text-sm text-muted">{data.category || '—'}</p>
+            <p className="text-sm text-muted">{categoryLabel(data.category) || '—'}</p>
           </div>
           <span className="text-2xl font-bold text-pink">{data.level ?? 0}%</span>
         </div>
