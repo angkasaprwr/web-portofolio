@@ -129,8 +129,29 @@
   }
 }
 
- cursor/portfolio-website-980a
-/* Dark mode — readable text & surfaces across all public pages */
+/* ─── Light mode: strong readable contrast ─── */
+html:not(.dark) body {
+  color: #2c2c2c;
+  background: #fff3f8;
+}
+
+html:not(.dark) .text-muted {
+  color: #5f5f5f;
+}
+
+html:not(.dark) h1,
+html:not(.dark) h2,
+html:not(.dark) h3,
+html:not(.dark) h4,
+html:not(.dark) .font-display {
+  color: #2c2c2c;
+}
+
+html:not(.dark) blockquote {
+  color: #c42d72;
+}
+
+/* ─── Dark mode ─── */
 html.dark {
   color-scheme: dark;
   --color-ink: #F7F2F5;
@@ -154,7 +175,6 @@ html.dark ::selection {
   color: #fff;
 }
 
-/* Surfaces that stay “white” in light mode */
 html.dark .glass,
 html.dark .glass-strong {
   background: rgba(36, 26, 32, 0.9);
@@ -166,33 +186,10 @@ html.dark .card-premium {
   background: rgba(42, 30, 38, 0.95);
   border-color: rgba(248, 87, 166, 0.22);
   color: var(--color-ink);
-=======
-/* Dark mode */
-.dark body,
-html.dark body {
-  background: #1a1218;
-  color: #f5f0f2;
-}
-
-html.dark {
-  color-scheme: dark;
-}
-
-html.dark .glass,
-html.dark .glass-strong {
-  background: rgba(40, 28, 35, 0.75);
-  border-color: rgba(248, 87, 166, 0.2);
-}
-
-html.dark .card-premium {
-  background: rgba(40, 28, 35, 0.85);
-  border-color: rgba(248, 87, 166, 0.15);
- main
 }
 
 html.dark .bg-hero {
   background:
- cursor/portfolio-website-980a
     radial-gradient(ellipse 80% 60% at 10% 20%, rgba(248, 87, 166, 0.18), transparent 55%),
     radial-gradient(ellipse 70% 50% at 90% 10%, rgba(212, 175, 55, 0.1), transparent 50%),
     linear-gradient(180deg, #1a1218 0%, #241820 55%, #1a1218 100%);
@@ -235,7 +232,6 @@ html.dark .skeleton {
   background: rgba(61, 42, 53, 0.7);
 }
 
-/* Force readable contrast on common light-only utility backgrounds */
 html.dark .bg-white,
 html.dark .bg-white\/40,
 html.dark .bg-white\/50,
@@ -288,7 +284,6 @@ html.dark .border-white\/80 {
   border-color: rgba(248, 87, 166, 0.2) !important;
 }
 
-/* Form controls & filter chips */
 html.dark input,
 html.dark textarea,
 html.dark select {
@@ -307,7 +302,6 @@ html.dark option {
   color: #f7f2f5;
 }
 
-/* Keep primary pink buttons & CTA banners readable */
 html.dark .btn-primary {
   color: #ffffff;
 }
@@ -317,7 +311,6 @@ html.dark .text-white\/80 {
   color: #ffffff !important;
 }
 
-/* White CTA pills on pink banners must stay bright for contrast */
 html.dark a[class*="!bg-white"],
 html.dark button[class*="!bg-white"],
 html.dark a.rounded-full.bg-white.text-pink,
@@ -331,7 +324,6 @@ html.dark a.rounded-full.bg-white.text-pink {
   color: #e03d8a !important;
 }
 
-/* Footer & section readability */
 html.dark footer,
 html.dark footer a,
 html.dark footer p,
@@ -359,16 +351,6 @@ html.dark footer .bg-pink.text-white {
   color: #ffffff !important;
 }
 
-html.dark footer .bg-pink span,
-html.dark footer .bg-pink * {
-  color: inherit;
-}
-
-html.dark footer .bg-pink {
-  color: #ffffff !important;
-}
-
-/* Navbar links readable on dark glass */
 html.dark nav a,
 html.dark nav button {
   color: #f0e8ec;
@@ -382,7 +364,6 @@ html.dark nav .text-pink {
   color: #ff9fd0 !important;
 }
 
-/* Filter chips / inactive pills */
 html.dark button.bg-white,
 html.dark button.border.border-pink-soft {
   color: #f7f2f5;
@@ -394,7 +375,6 @@ html.dark a.bg-pink.text-white {
   color: #ffffff !important;
 }
 
-/* Card body text defaults */
 html.dark article,
 html.dark article h3,
 html.dark .card-premium h3,
@@ -412,25 +392,77 @@ html.dark .card-premium a.text-pink {
   color: #ff9fd0 !important;
 }
 
-/* Soft pink badge chips: keep pink text readable on tinted dark bg */
 html.dark .bg-pink-soft\/70.text-pink,
 html.dark span.bg-pink-soft\/70,
 html.dark span.rounded-full.bg-pink-soft\/70 {
   background-color: rgba(248, 87, 166, 0.22) !important;
   color: #ffc2df !important;
-
-    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(248, 87, 166, 0.2), transparent 55%),
-    radial-gradient(ellipse 70% 50% at 90% 10%, rgba(212, 175, 55, 0.12), transparent 50%),
-    linear-gradient(180deg, #1a1218 0%, #241820 100%);
- main
 }
 
-/* Swiper overrides */
+html.dark blockquote {
+  color: #ffc2df !important;
+  background: rgba(248, 87, 166, 0.12) !important;
+}
+
+html.dark .rounded-2xl.bg-white,
+html.dark .shadow-card {
+  color: #f7f2f5;
+}
+
+html.dark table th,
+html.dark table td {
+  color: #f0e8ec;
+}
+
+html.dark table thead {
+  background: rgba(248, 87, 166, 0.12) !important;
+}
+
+/* ─── Floating modals (Pendidikan & Keahlian) ─── */
+.modal-panel {
+  color: var(--color-ink);
+}
+
+html.dark .modal-panel {
+  background: #2a1e26;
+  color: #f7f2f5;
+}
+
+html.dark .modal-panel .text-muted {
+  color: #d2c6cd !important;
+}
+
+html.dark .modal-input,
+html.dark .modal-panel input,
+html.dark .modal-panel textarea,
+html.dark .modal-panel select {
+  background-color: #352630 !important;
+  color: #f7f2f5 !important;
+  border-color: rgba(248, 87, 166, 0.35) !important;
+}
+
+html:not(.dark) .modal-input,
+html:not(.dark) .modal-panel input,
+html:not(.dark) .modal-panel textarea,
+html:not(.dark) .modal-panel select {
+  background-color: #ffffff;
+  color: #2c2c2c;
+}
+
+html.dark .text-gold,
+html:not(.dark) .text-gold {
+  color: #d4af37;
+}
+
+html.dark .border-gold {
+  border-color: #d4af37 !important;
+}
+
+/* Swiper */
 .swiper-pagination-bullet-active {
   background: #F857A6 !important;
 }
 
- cursor/portfolio-website-980a
 html.dark .swiper-button-next,
 html.dark .swiper-button-prev {
   color: #ff9fd0 !important;
@@ -446,9 +478,7 @@ html.dark .swiper-pagination-bullet-active {
   opacity: 1;
 }
 
-
- main
-/* Custom scrollbar */
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -462,7 +492,6 @@ html.dark .swiper-pagination-bullet-active {
 ::-webkit-scrollbar-thumb:hover {
   background: #F857A6;
 }
- cursor/portfolio-website-980a
 
 html.dark ::-webkit-scrollbar-track {
   background: #1a1218;
@@ -473,5 +502,3 @@ html.dark ::-webkit-scrollbar-thumb {
 html.dark ::-webkit-scrollbar-thumb:hover {
   background: #f857a6;
 }
-
- main

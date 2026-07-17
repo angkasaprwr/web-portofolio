@@ -117,6 +117,53 @@ async function main() {
   await prisma.skill.createMany({ data: skills });
   console.log('✅ Skills seeded');
 
+  await prisma.education.deleteMany();
+  await prisma.education.createMany({
+    data: [
+      {
+        institution: 'Universitas Harkat Negeri Tegal',
+        degree: 'Teknik Informatika',
+        field: 'Teknik Informatika',
+        level: 'S1',
+        gpa: '3.72',
+        description:
+          'Mempelajari berbagai bidang dalam ilmu komputer, termasuk pemrograman, basis data, jaringan, kecerdasan buatan, dan rekayasa perangkat lunak.',
+        startYear: '2022',
+        endYear: null,
+        isCurrent: true,
+        status: 'active',
+        order: 1,
+      },
+      {
+        institution: 'SMA Negeri 1 Jatibarang',
+        degree: 'Jurusan IPA',
+        field: 'IPA',
+        level: 'SMA',
+        gpa: null,
+        description: 'Nilai Akhir: 82,13',
+        startYear: '2019',
+        endYear: '2022',
+        isCurrent: false,
+        status: 'active',
+        order: 2,
+      },
+      {
+        institution: 'SMP Negeri 1 Jatibarang',
+        degree: 'SMP',
+        field: 'SMP',
+        level: 'SMP',
+        gpa: null,
+        description: 'Lulus dengan baik',
+        startYear: '2016',
+        endYear: '2019',
+        isCurrent: false,
+        status: 'graduated',
+        order: 3,
+      },
+    ],
+  });
+  console.log('✅ Educations seeded');
+
   await prisma.projectImage.deleteMany();
   await prisma.project.deleteMany();
   const projects = [
