@@ -361,7 +361,7 @@ async function main() {
       {
         platform: 'whatsapp',
         label: 'WhatsApp',
-        url: 'https://wa.me/6280000000000',
+        url: 'https://wa.me/6289683825678',
         icon: 'whatsapp',
         order: 1,
       },
@@ -382,7 +382,7 @@ async function main() {
       {
         platform: 'linkedin',
         label: 'LinkedIn',
-        url: 'https://linkedin.com/in/sukmaayu',
+        url: 'https://www.linkedin.com/in/sukmaayu-dwiwulandari/',
         icon: 'linkedin',
         order: 4,
       },
